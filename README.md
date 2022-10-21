@@ -7,7 +7,8 @@ The nui was made using React and Mantine UI.
 
 ## Dependencies
 - [ox_lib](https://github.com/overextended/ox_lib/releases/latest)
-- [ox_core](https://github.com/overextended/ox_core/releases)
+- [ox_core](https://github.com/overextended/ox_core/releases/latest)
+- [ox_inventory](https://github.com/overextended/ox_inventory/releases/latest)
 
 ## Features
 - Show minimap in vehicle only
@@ -45,6 +46,15 @@ The nui was made using React and Mantine UI.
 Any ped used by player will have max health set to 200 (by default, `mp_f_freemode_01` and some other peds has 150, while `mp_m_freemode_01` has 200).
 
 ## How to install
+You need to add this function to `ox_inventory/modules/bridge/ox/client.lua`:
+```lua
+function client.setPlayerStatus(values)
+	for name, value in pairs(values) do
+		if value > 0 then TriggerServerEvent('ox:status:add', name, value) else TriggerServerEvent('ox:status:remove', name, -value) end
+	end
+end
+```
+
 This resource is still under development, but you can test it by building the `web` folder using `pnpm`:
 ```
 cd ./web
