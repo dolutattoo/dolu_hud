@@ -5,7 +5,7 @@ CreateThread(function()
 	DisplayRadar(isRadarDisplayed)
 
 	while true do
-		if playerLoaded and cache.vehicle ~= vehicle then
+		if player?.loaded and cache.vehicle ~= vehicle then
 			isRadarDisplayed = not isRadarDisplayed
 			vehicle = cache.vehicle
 			DisplayRadar(isRadarDisplayed)
@@ -19,11 +19,8 @@ CreateThread(function()
 	local playerPed, lastHealth, lastArmour
 
 	while true do
-		if nuiReady and playerLoaded then
-			if playerPed ~= cache.ped then
-				SetEntityMaxHealth(cache.ped, 200)
-				playerPed = cache.ped
-			end
+		if nuiReady and player?.loaded then
+			local playerPed = cache.ped
 
 			local currentHealth = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
 			if currentHealth ~= lastHealth then
@@ -56,6 +53,7 @@ end)
 
 
 
+-- dev
 RegisterCommand('setHealth', function(source, args)
 	print('Current health:', GetEntityHealth(cache.ped) .. "/" .. GetEntityMaxHealth(cache.ped))
 	local value = args[1] and tonumber(args[1]) or 200

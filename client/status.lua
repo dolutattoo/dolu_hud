@@ -1,6 +1,6 @@
 -- Sending data from server to NUI
 RegisterNetEvent('ox:setPlayerData', function(name, data)
-	if Config.status[name] then
+	if player?.loaded and Config.status[name] then
 		SendNUIMessage({
 			action = 'setStatusValue',
 			data = {
@@ -9,7 +9,6 @@ RegisterNetEvent('ox:setPlayerData', function(name, data)
 			}
 		})
 	end
-
 	playerStatus[name] = data
 end)
 
@@ -18,7 +17,7 @@ CreateThread(function()
 	while true do
 		Wait(Config.updateInterval)
 
-		if nuiReady and playerLoaded then
+		if nuiReady and player?.loaded then
 			for name, value in pairs(playerStatus) do
 				local status = Config.status[name]
 
@@ -47,7 +46,7 @@ end)
 -- Save player status in database
 CreateThread(function()
 	while true do
-		if playerLoaded then
+		if player?.loaded then
 			TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
 			utils.debug(1, 'Saving status in database')
 		end

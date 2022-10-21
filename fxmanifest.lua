@@ -17,6 +17,7 @@ shared_scripts {
 }
 
 client_scripts {
+	'@ox_core/imports/client.lua',
 	'client/**/*.lua',
 }
 

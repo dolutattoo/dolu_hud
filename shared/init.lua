@@ -7,7 +7,7 @@ if not IsDuplicityVersion() then
 			data = data
 		})
 		playerStatus = data
-		playerLoaded = true
+		SetEntityMaxHealth(cache.ped, 200)
 	end)
 
 	RegisterNetEvent('ox:playerLogout', function()
@@ -17,11 +17,15 @@ if not IsDuplicityVersion() then
 			data = false
 		})
 		playerStatus = {}
-		playerLoaded = false
+		if nuiReady then
+			nuiReady = false
+			player.loaded = false
+		end
 	end)
 
 	RegisterNUICallback('nuiReady', function(_, cb)
 		nuiReady = true
+		player.loaded = true
 		cb(1)
 	end)
 end
