@@ -1,10 +1,9 @@
-# dolu_hud
+# dolu_hud (Work in progress)
 
 This is a FiveM resource who provides status system with hud elements.
 Only work for Overextended framework, not ESX or anything else.
 The nui was made using React and Mantine UI.
 <div align='center' style='width:25vw'><img src='https://i.imgur.com/depQRs9.png'/></div>
-
 
 ## Dependencies
 - [ox_lib](https://github.com/overextended/ox_lib/releases/latest)
@@ -25,19 +24,19 @@ The nui was made using React and Mantine UI.
 
 	- `Hunger`<br>
 		Start from 100 and decrease slowly to 0.<br>
-		When 0, decrease health slowly.
+		When 0, decrease health slowly. (todo)
 
 	- `Thirst`<br>
 		Start from 100 and decrease slowly to 0.<br>
-		When 0, decrease health slowly.
+		When 0, decrease health slowly. (todo)
 
 	- `Stress`<br>
 		Start from 0 and increase slowly to 100.<br>
-		When 100, decrease health slowly.
+		When 100, decrease health slowly. (todo)
 
 	- `Drunk`<br>
 		Start from 0 and increase slowly to 100.<br>
-		When 100, decrease health slowly.
+		When 100, decrease health slowly. (todo)
 
 	- `Oxygen` (underwater)<br>
 		Same comportment as vanilla, which is fine
