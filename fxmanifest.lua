@@ -36,8 +36,8 @@ files {
 }
 
 dependencies {
-	'/server:5104',
 	'/onesync',
+	'pma-voice',
 	'ox_lib',
 	'ox_core'
 }

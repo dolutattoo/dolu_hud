@@ -10,6 +10,7 @@ AddEventHandler('ox:playerLoaded', function(source, userid, charid)
 	end
 
 	TriggerClientEvent('dolu_hud:onPlayerLoaded', player.source, {
+		voiceLevel = Player(player.source).state.proximity.index,
 		health = data.health,
 		armour = data.armour,
 		hunger = data.hunger,
@@ -52,20 +53,24 @@ RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	utils.debug(1, "Saved status for player " .. player.source)
 end)
 
-RegisterCommand('heal', function(source, args)
-	local player = Ox.GetPlayer(args[1] or source)
+lib.addCommand('group.admin', 'heal', function(source, args)
+	if source < 1 and not args.playerId then return end
+	local player = Ox.GetPlayer(args.playerId or source)
 	if player then
 		for key, value in pairs({ hunger = 100, thirst = 100, stress = 0, drunk = 0 }) do
 			player.setdb(key, value, true)
 		end
+		TriggerClientEvent('dolu_hud:healPlayer', player.source)
 		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
-end, false)
+end, {'playerId:number'})
 
-RegisterCommand('random', function(source, args)
+
+-- dev
+RegisterCommand('demo', function(source, args)
 	local player = Ox.GetPlayer(args[1] or source)
 	if player then
-		for key, value in pairs({ hunger = 85, thirst = 25, stress = 80, drunk = 70 }) do
+		for key, value in pairs({ hunger = 10, thirst = 5, stress = 80, drunk = 70 }) do
 			player.setdb(key, value, true)
 		end
 		utils.debug(1, "Player " .. player.source .. " healed!")

@@ -1,23 +1,23 @@
-local vehicle = false
-local isRadarDisplayed = false
 
-CreateThread(function()
-	DisplayRadar(isRadarDisplayed)
-
-	while true do
-		if player?.loaded and cache.vehicle ~= vehicle then
-			isRadarDisplayed = not isRadarDisplayed
-			vehicle = cache.vehicle
-			DisplayRadar(isRadarDisplayed)
+-- Hide radar if not in a vehicle
+if Config.hideRadarOnFoot then
+	CreateThread(function()
+		local isRadarDisplayed, vehicle = false, false
+		DisplayRadar(isRadarDisplayed)
+		while true do
+			if player?.loaded and cache.vehicle ~= vehicle then
+				isRadarDisplayed = not isRadarDisplayed
+				vehicle = cache.vehicle
+				DisplayRadar(isRadarDisplayed)
+			end
+			Wait(200)
 		end
-		Wait(200)
-	end
-end)
+	end)
+end
 
 -- Get Health and Armour and send them to NUI when they change
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour
-
 	while true do
 		if nuiReady and player?.loaded then
 			local playerPed = cache.ped
@@ -25,7 +25,6 @@ CreateThread(function()
 			local currentHealth = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
 			if currentHealth ~= lastHealth then
 				lastHealth = currentHealth
-				print('Health: ' .. currentHealth)
 				SendNUIMessage({
 					action = 'setStatusValue',
 					data = {
@@ -51,12 +50,23 @@ CreateThread(function()
 	end
 end)
 
+RegisterNetEvent('dolu_hud:healPlayer', function()
+	if player?.loaded and IsPedDeadOrDying(cache.ped) then return end
+	SetEntityHealth(cache.ped, 200)
+end)
 
+-- pma_voice
+RegisterNetEvent('pma-voice:setTalkingMode', function(mode)
+	SendNUIMessage({
+		action = 'setStatusValue',
+		data = {
+			statusName = 'voiceLevel',
+			value = mode
+		}
+	})
+	Wait(500)
+end)
 
--- dev
-RegisterCommand('setHealth', function(source, args)
-	print('Current health:', GetEntityHealth(cache.ped) .. "/" .. GetEntityMaxHealth(cache.ped))
-	local value = args[1] and tonumber(args[1]) or 200
-	SetEntityHealth(cache.ped, value)
-	print('New health:', GetEntityHealth(cache.ped) .. "/" .. GetEntityMaxHealth(cache.ped))
-end, false)
+RegisterNetEvent('pma-voice:radioActive', function(...)
+	-- todo: icon change when talking over radio
+end)

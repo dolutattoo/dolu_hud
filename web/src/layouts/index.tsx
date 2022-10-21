@@ -1,11 +1,12 @@
 import React, { useState } from 'React'
 import { Center, Group, RingProgress, ThemeIcon, Transition } from '@mantine/core'
-import { BiBrain, BiHeart, BiShield } from 'react-icons/bi';
+import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi';
 import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb';
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
 
 interface Status {
+  voiceLevel: number
   health: number
   armour: number
   hunger: number
@@ -17,40 +18,46 @@ interface Status {
 
 const Hud: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [voiceLevel, setVoiceLevel] = useState<number>(0)
   const [health, setHealth] = useState<number>(0)
   const [healthColor, setHealthColor] = useState<string>('teal')
   const [armour, setArmour] = useState<number>(0)
   const [hunger, setHunger] = useState<number>(100)
+  const [hungerColor, setHungerColor] = useState<string>('yellow')
   const [thirst, setThirst] = useState<number>(100)
+  const [thirstColor, setThirstColor] = useState<string>('blue')
   const [stress, setStress] = useState<number>(0)
   const [drunk, setDrunk] = useState<number>(0)
   const [oxygen, setOxygen] = useState<number>(100)
 
-
   useNuiEvent('toggleVisibility', (value: boolean) => setVisible(value))
 
   useNuiEvent('initStatus', (data: Status) => {
-    setVisible(true)
+    setVoiceLevel(data.voiceLevel*33.3333)
     setHealth(data.health)
     setArmour(data.armour)
     setHunger(data.hunger)
     setThirst(data.thirst)
     setStress(data.stress)
     setDrunk(data.drunk)
-
     fetchNui('nuiReady')
+    setVisible(true)
   })
 
   useNuiEvent('setStatusValue', (data: { statusName: string, value: number }) => {
-    if (data.statusName === 'health') {
+    if (data.statusName === 'voiceLevel') {
+      setVoiceLevel(data.value*33.3333)
+    } else if (data.statusName === 'health') {
       setHealth(data.value)
-      setHealthColor(getColor(data.value, 'teal'))
+      setHealthColor(getColor(data.value, 'teal')) //todo: red color at low value for other status
     } else if (data.statusName === 'armour') {
       setArmour(data.value)
     } else if (data.statusName === 'hunger') {
       setHunger(data.value)
+      setHungerColor(getColor(data.value, 'yellow'))
     } else if (data.statusName === 'thirst') {
       setThirst(data.value)
+      setThirstColor(getColor(data.value, 'blue'))
     } else if (data.statusName === 'stress') {
       setStress(data.value)
     } else if (data.statusName === 'drunk') {
@@ -61,16 +68,23 @@ const Hud: React.FC = () => {
   })
 
   const getColor = (value: number, color:string) => {
-    if (value > 15) {
-      return color
-    } else {
-      return 'red'
-    }
+    if (value > 15) { return color } else { return 'red' }
   }
 
   return (
     <>
         {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
+
+          {/* VOICE */}
+          {voiceLevel > 0 && <RingProgress sections={[{ value: voiceLevel, color: 'gray.2' }]} thickness={6} size={55} roundCaps
+            label={
+              <Center>
+                <ThemeIcon color='gray.2' variant='light' radius='xl' size={44}>
+                  <BiMicrophone size={23} />
+                </ThemeIcon>
+              </Center>
+            }
+          />}
 
           {/* HEALTH */}
           {health !== undefined && <RingProgress sections={[{ value: health, color: healthColor }]} thickness={6} size={55} roundCaps
@@ -95,10 +109,10 @@ const Hud: React.FC = () => {
           />}
 
           {/* HUNGER */}
-          {hunger < 100 && <RingProgress sections={[{ value: hunger, color: 'yellow' }]} thickness={6} size={55} roundCaps
+          {hunger < 100 && <RingProgress sections={[{ value: hunger, color: hungerColor }]} thickness={6} size={55} roundCaps
             label={
               <Center>
-                <ThemeIcon color='yellow' variant='light' radius='xl' size={44}>
+                <ThemeIcon color={hungerColor} variant='light' radius='xl' size={44}>
                   <TbMeat size={23} />
                 </ThemeIcon>
               </Center>
@@ -106,10 +120,10 @@ const Hud: React.FC = () => {
           />}
 
           {/* THIRST */}
-          {thirst < 100 && <RingProgress sections={[{ value: thirst, color: 'blue' }]} thickness={6} size={55} roundCaps
+          {thirst < 100 && <RingProgress sections={[{ value: thirst, color: thirstColor }]} thickness={6} size={55} roundCaps
             label={
               <Center>
-                <ThemeIcon color='blue' variant='light' radius='xl' size={44}>
+                <ThemeIcon color={thirstColor} variant='light' radius='xl' size={44}>
                   <TbDroplet size={23} />
                 </ThemeIcon>
               </Center>

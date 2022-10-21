@@ -1,11 +1,12 @@
-if not IsDuplicityVersion() then
-	playerLoaded = false
-
+if IsDuplicityVersion() then
+	SetConvarReplicated('voice_enableUi', 'false') -- pma_voice
+else
 	RegisterNetEvent('dolu_hud:onPlayerLoaded', function(data)
 		SendNUIMessage({
 			action = 'initStatus',
 			data = data
 		})
+		data.voiceLevel = nil -- We only needed it on player loaded
 		playerStatus = data
 		SetEntityMaxHealth(cache.ped, 200)
 	end)
