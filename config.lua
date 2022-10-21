@@ -1,15 +1,15 @@
 Config = {}
 
-Config.debug = 1
-Config.updateInterval = 2500
-Config.updateDatabaseInterval = 60*1000
+Config.debug = false -- false=disabled, 1=basics, 2=everything
+Config.updateInterval = 2500 -- how fast to loop for updating status (/!\ Will affect values in Config.status below!)
+Config.updateDatabaseInterval = 60*1000 -- Frenquency when client send status to server to save in database
 
 Config.status = {
-	['hunger'] = {
-		default = 100,
+	['hunger'] = { -- status name
+		default = 100, -- default status state
 		onTick = {
-			action = "remove",
-			value = 0.1
+			action = "remove", -- when ticked, add or remove?
+			value = 0.1 -- how much? (percentage)
 		}
 	},
 	['thirst'] = {
