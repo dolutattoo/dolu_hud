@@ -1,0 +1,36 @@
+{
+  "debug": false,
+  "hideRadarOnFoot": true,
+  "updateInterval": 2500,
+  "updateDatabaseInterval": 60000,
+  "status": {
+    "hunger": {
+      "default": 100,
+      "onTick": {
+        "action": "remove",
+        "value": 0.1
+      }
+    },
+    "thirst": {
+      "default": 100,
+      "onTick": {
+        "action": "remove",
+        "value": 0.1
+      }
+    },
+    "stress": {
+      "default": 0,
+      "onTick": {
+        "action": "remove",
+        "value": 0.1
+      }
+    },
+    "drunk": {
+      "default": 0,
+      "onTick": {
+        "action": "remove",
+        "value": 0.7
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi';
 import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb';
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
+import { Config } from '../providers/ConfigProvider';
 
 interface Status {
   voiceLevel: number
@@ -17,6 +18,9 @@ interface Status {
 }
 
 const Hud: React.FC = () => {
+  const [config, setConfig] = useState<Config|['']>(['']);
+  useNuiEvent('loadConfig', (data) => setConfig(data));
+
   const [visible, setVisible] = useState<boolean>(false)
   const [voiceLevel, setVoiceLevel] = useState<number>(0)
   const [health, setHealth] = useState<number>(0)

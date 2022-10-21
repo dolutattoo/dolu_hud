@@ -1,6 +1,12 @@
+Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
+
 if IsDuplicityVersion() then
 	SetConvarReplicated('voice_enableUi', 'false') -- pma_voice
 else
+	SendNUIMessage({
+		action = 'setConfig',
+		data = Config
+	})
 	RegisterNetEvent('dolu_hud:onPlayerLoaded', function(data)
 		SendNUIMessage({
 			action = 'initStatus',
