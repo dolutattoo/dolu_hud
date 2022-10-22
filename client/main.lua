@@ -93,6 +93,15 @@ RegisterNetEvent('pma-voice:setTalkingMode', function(mode)
 	Wait(500)
 end)
 
-RegisterNetEvent('pma-voice:radioActive', function(...)
-	-- todo: icon change when talking over radio
+RegisterNetEvent('pma-voice:radioActive', function(bool)
+	local res
+	if bool then res = 1 else res = 0 end
+	SendNUIMessage({
+		action = 'setStatusValue',
+		data = {
+			statusName = 'radioState',
+			value = res
+		}
+	})
+	Wait(500)
 end)
