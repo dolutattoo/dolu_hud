@@ -20,28 +20,6 @@ AddEventHandler('ox:playerLoaded', function(source, userid, charid)
 	})
 end)
 
-RegisterNetEvent('ox:status:add', function(name, value)
-	local player = Ox.GetPlayer(source)
-	local currentStatus = player.get(name)
-
-	value = utils.percent(value, 1000000, 2) -- Because people use 1000000 as max value
-
-	local newStatus = utils.formatPercentage(currentStatus + value)
-	player.setdb(name, newStatus, true)
-	utils.debug(1, "^7Action:add:^5" .. name, "^7Value added:^5" .. value, "^7New status:^5" .. newStatus .. "^7")
-end)
-
-RegisterNetEvent('ox:status:remove', function(name, value)
-	local player = Ox.GetPlayer(source)
-	local currentStatus = player.get(name)
-
-	value = utils.percent(value, 1000000, 2) -- Because people use 1000000 ax max value
-
-	local newStatus = utils.formatPercentage(currentStatus - value)
-	player.setdb(name, newStatus, true)
-	utils.debug(1, "^7Action:remove:^5" .. name, "^7Value removed:^5" .. value, "^7New status:^5" .. newStatus .. "^7")
-end)
-
 RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	local player = Ox.GetPlayer(source)
 	if player then

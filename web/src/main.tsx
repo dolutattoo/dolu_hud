@@ -1,18 +1,18 @@
-import { MantineProvider } from '@mantine/core';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-import { isEnvBrowser } from './utils/misc';
+import { MantineProvider } from '@mantine/core'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
+import { isEnvBrowser } from './utils/misc'
 
 if (isEnvBrowser()) {
-  const root = document.getElementById('root');
+  const root = document.getElementById('root')
 
   // https://i.imgur.com/iPTAdYV.png - Night time img
-  root!.style.backgroundImage = 'url("https://i.imgur.com/3pzRj9n.png")';
-  root!.style.backgroundSize = 'cover';
-  root!.style.backgroundRepeat = 'no-repeat';
-  root!.style.backgroundPosition = 'center';
+  root!.style.backgroundImage = 'url("https://i.imgur.com/3pzRj9n.png")'
+  root!.style.backgroundSize = 'cover'
+  root!.style.backgroundRepeat = 'no-repeat'
+  root!.style.backgroundPosition = 'center'
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -21,4 +21,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <App />
     </MantineProvider>
   </React.StrictMode>
-);
+)

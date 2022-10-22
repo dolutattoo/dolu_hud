@@ -1,9 +1,11 @@
+Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
+
 if IsDuplicityVersion() then
 	SetConvarReplicated('voice_enableUi', 'false') -- pma_voice
 else
 	RegisterNetEvent('dolu_hud:onPlayerLoaded', function(data)
 		SendNUIMessage({
-			action = 'initStatus',
+			action = 'init',
 			data = data
 		})
 		data.voiceLevel = nil -- We only needed it on player loaded
