@@ -12,6 +12,14 @@ RegisterNetEvent('ox:setPlayerData', function(name, data)
 	playerStatus[name] = data
 end)
 
+RegisterNetEvent('ox:status:update', function(name, value)
+	value = utils.percent(value, 1000000, 2) -- Because people use 1000000 as max value
+	local currentStatus = playerStatus[name]
+	local newStatus = utils.formatPercentage(value > 0 and currentStatus + value or currentStatus - value)
+	playerStatus[name] = newStatus
+	utils.debug(1, "^7Action:add:^5" .. name, "^7Value added:^5" .. value, "^7New status:^5" .. newStatus .. "^7")
+end)
+
 -- Status loop
 CreateThread(function()
 	while true do
@@ -22,11 +30,7 @@ CreateThread(function()
 				local status = Config.status[name]
 
 				if status then
-					if status.onTick.action == 'add' then
-						playerStatus[name] +=  status.onTick.value
-					elseif status.onTick.action == 'remove' then
-						playerStatus[name] -=  status.onTick.value
-					end
+					playerStatus[name] += status.onTick
 
 					if playerStatus[name] < 0 then
 						playerStatus[name] = 0
@@ -46,7 +50,7 @@ end)
 -- Save player status in database
 CreateThread(function()
 	while true do
-		if player?.loaded then
+		if player?.loaded and playerStatus then
 			TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
 			utils.debug(1, 'Saving status in database')
 		end

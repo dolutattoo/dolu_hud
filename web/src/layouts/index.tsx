@@ -1,10 +1,9 @@
 import React, { useState } from 'React'
-import { Center, Group, RingProgress, ThemeIcon, Transition } from '@mantine/core'
-import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi';
-import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb';
+import { Center, Group, RingProgress, ThemeIcon } from '@mantine/core'
+import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
+import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
-import { Config } from '../providers/ConfigProvider';
 
 interface Status {
   voiceLevel: number
@@ -18,9 +17,6 @@ interface Status {
 }
 
 const Hud: React.FC = () => {
-  const [config, setConfig] = useState<Config|['']>(['']);
-  useNuiEvent('loadConfig', (data) => setConfig(data));
-
   const [visible, setVisible] = useState<boolean>(false)
   const [voiceLevel, setVoiceLevel] = useState<number>(0)
   const [health, setHealth] = useState<number>(0)
@@ -36,7 +32,7 @@ const Hud: React.FC = () => {
 
   useNuiEvent('toggleVisibility', (value: boolean) => setVisible(value))
 
-  useNuiEvent('initStatus', (data: Status) => {
+  useNuiEvent('init', (data: Status) => {
     setVoiceLevel(data.voiceLevel*33.3333)
     setHealth(data.health)
     setArmour(data.armour)
@@ -72,7 +68,7 @@ const Hud: React.FC = () => {
   })
 
   const getColor = (value: number, color:string) => {
-    if (value > 15) { return color } else { return 'red' }
+    if (value > 10) { return color } else { return 'red' }
   }
 
   return (

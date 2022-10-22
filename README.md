@@ -50,7 +50,7 @@ You need to add this function to `ox_inventory/modules/bridge/ox/client.lua`:
 ```lua
 function client.setPlayerStatus(values)
 	for name, value in pairs(values) do
-		if value > 0 then TriggerServerEvent('ox:status:add', name, value) else TriggerServerEvent('ox:status:remove', name, -value) end
+		TriggerEvent('ox:status:update', name, value)
 	end
 end
 ```

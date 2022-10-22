@@ -6,31 +6,19 @@
   "status": {
     "hunger": {
       "default": 100,
-      "onTick": {
-        "action": "remove",
-        "value": 0.1
-      }
+      "onTick": -0.1
     },
     "thirst": {
       "default": 100,
-      "onTick": {
-        "action": "remove",
-        "value": 0.1
-      }
+      "onTick": -0.1
     },
     "stress": {
       "default": 0,
-      "onTick": {
-        "action": "remove",
-        "value": 0.1
-      }
+      "onTick": -0.1
     },
     "drunk": {
       "default": 0,
-      "onTick": {
-        "action": "remove",
-        "value": 0.7
-      }
+      "onTick": -0.1
     }
   }
 }

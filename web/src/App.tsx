@@ -1,6 +1,5 @@
 import { Box, createStyles } from '@mantine/core'
 import Hud from './layouts'
-import { useConfig } from './providers/ConfigProvider'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -13,10 +12,6 @@ const useStyles = createStyles((theme) => ({
 
 const App: React.FC = () => {
   const { classes } = useStyles()
-  const { config } = useConfig()
-
-  console.log(JSON.stringify(config, null, '\t'))
-
 
   return (
     <>
