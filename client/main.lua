@@ -9,6 +9,10 @@ if Config.hideRadarOnFoot then
 				isRadarDisplayed = not isRadarDisplayed
 				vehicle = cache.vehicle
 				DisplayRadar(isRadarDisplayed)
+				SendNUIMessage({
+					action = 'toggleSpeedo',
+					data = vehicle and true or false
+				})
 			end
 			Wait(200)
 		end
@@ -47,6 +51,28 @@ CreateThread(function()
 			end
 		end
 		Wait(50)
+	end
+end)
+
+-- Speedo
+CreateThread(function()
+	local lastSpeed = 0
+	while true do
+		if cache.seat and not IsPedDeadOrDying(cache.ped) then
+			local currentSpeed = GetEntitySpeed(cache.vehicle)*(Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
+			if oldSpeed ~= currentSpeed then
+				lastSpeed = currentSpeed
+				SendNUIMessage({
+					action = 'setSpeedo',
+					data = {
+						speed = math.floor(currentSpeed),
+						gear = GetVehicleCurrentGear(cache.vehicle),
+						rpm = GetVehicleCurrentRpm(cache.vehicle)
+					}
+				})
+			end
+		end
+		Wait(10)
 	end
 end)
 

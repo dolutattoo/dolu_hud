@@ -2,7 +2,13 @@ import { Box, createStyles } from '@mantine/core'
 import Hud from './layouts'
 
 const useStyles = createStyles((theme) => ({
-  container: {
+  status: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  speedo: {
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -15,7 +21,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Box className={classes.container}>
+      <Box className={classes.status}>
         <Hud />
       </Box>
     </>

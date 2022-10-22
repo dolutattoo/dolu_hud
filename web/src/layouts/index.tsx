@@ -4,8 +4,10 @@ import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
 import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
+import Speedo from './Speedo'
+import config from '../../../config.json'
 
-interface Status {
+interface StatusProps {
   voiceLevel: number
   health: number
   armour: number
@@ -32,7 +34,7 @@ const Hud: React.FC = () => {
 
   useNuiEvent('toggleVisibility', (value: boolean) => setVisible(value))
 
-  useNuiEvent('init', (data: Status) => {
+  useNuiEvent('init', (data: StatusProps) => {
     setVoiceLevel(data.voiceLevel*33.3333)
     setHealth(data.health)
     setArmour(data.armour)
@@ -74,6 +76,8 @@ const Hud: React.FC = () => {
   return (
     <>
         {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
+
+          {config.speedo && <Speedo />}
 
           {/* VOICE */}
           {voiceLevel > 0 && <RingProgress sections={[{ value: voiceLevel, color: 'gray.2' }]} thickness={6} size={55} roundCaps
