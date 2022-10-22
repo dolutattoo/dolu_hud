@@ -2,6 +2,7 @@ import React, { useState } from 'React'
 import { Center, Group, RingProgress, ThemeIcon } from '@mantine/core'
 import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
 import { TbDroplet, TbGlass, TbLungs, TbMeat } from 'react-icons/tb'
+import { FiRadio } from 'react-icons/fi'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
 import Speedo from './Speedo'
@@ -20,6 +21,7 @@ interface StatusProps {
 
 const Hud: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [isTalkingRadio, setTalkingRadio] = useState<number>(0)
   const [voiceLevel, setVoiceLevel] = useState<number>(0)
   const [health, setHealth] = useState<number>(0)
   const [healthColor, setHealthColor] = useState<string>('teal')
@@ -66,6 +68,8 @@ const Hud: React.FC = () => {
       setDrunk(data.value)
     } else if (data.statusName === 'oxygen') {
       setOxygen(data.value)
+    } else if (data.statusName === 'radioState') {
+      setTalkingRadio(data.value)
     }
   })
 
@@ -84,7 +88,7 @@ const Hud: React.FC = () => {
             label={
               <Center>
                 <ThemeIcon color='gray.2' variant='light' radius='xl' size={44}>
-                  <BiMicrophone size={23} />
+                  {isTalkingRadio > 0 ? <FiRadio size={23} /> : <BiMicrophone size={23} /> }
                 </ThemeIcon>
               </Center>
             }
