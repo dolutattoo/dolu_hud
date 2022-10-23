@@ -10,7 +10,7 @@ AddEventHandler('ox:playerLoaded', function(source, userid, charid)
 	end
 
 	TriggerClientEvent('dolu_hud:onPlayerLoaded', player.source, {
-		voiceLevel = Player(player.source).state.proximity.index,
+		voiceLevel = Player(player.source).state.proximity.index or 2,
 		health = data.health,
 		armour = data.armour,
 		hunger = data.hunger,
