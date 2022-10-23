@@ -94,13 +94,11 @@ RegisterNetEvent('pma-voice:setTalkingMode', function(mode)
 end)
 
 RegisterNetEvent('pma-voice:radioActive', function(bool)
-	local res
-	if bool then res = 1 else res = 0 end
 	SendNUIMessage({
 		action = 'setStatusValue',
 		data = {
 			statusName = 'radioState',
-			value = res
+			value = bool and 1 or 0
 		}
 	})
 	Wait(500)
