@@ -58,7 +58,7 @@ end)
 CreateThread(function()
 	local lastSpeed = 0
 	while true do
-		if cache.seat and not IsPedDeadOrDying(cache.ped) then
+		if player?.loaded and cache.seat and not IsPedDeadOrDying(cache.ped) then
 			local currentSpeed = GetEntitySpeed(cache.vehicle)*(Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
 			if oldSpeed ~= currentSpeed then
 				lastSpeed = currentSpeed
