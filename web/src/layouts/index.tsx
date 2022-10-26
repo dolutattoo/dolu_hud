@@ -53,7 +53,7 @@ const Hud: React.FC = () => {
       setVoiceLevel(data.value*33.3333)
     } else if (data.statusName === 'health') {
       setHealth(data.value)
-      setHealthColor(getColor(data.value, 'teal')) //todo: red color at low value for other status
+      setHealthColor(getColor(data.value, 'teal'))
     } else if (data.statusName === 'armour') {
       setArmour(data.value)
     } else if (data.statusName === 'hunger') {
@@ -68,6 +68,7 @@ const Hud: React.FC = () => {
       setDrunk(data.value)
     } else if (data.statusName === 'oxygen') {
       setOxygen(data.value)
+      setHealthColor(getColor(data.value, 'cyan'))
     } else if (data.statusName === 'radioState') {
       setTalkingRadio(data.value)
     }
@@ -81,6 +82,7 @@ const Hud: React.FC = () => {
     <>
         {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
 
+          {/* SPEEDO */}
           {config.speedo && <Speedo />}
 
           {/* VOICE */}
