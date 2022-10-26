@@ -1,3 +1,18 @@
+RegisterNetEvent('ox:setPlayerData', function(name, data)
+	if player?.loaded and Config.status[name] then
+		local currentStatus = playerStatus[name]
+		local newStatus = utils.formatPercentage(data > 0 and currentStatus + data or currentStatus - data)
+		SendNUIMessage({
+			action = 'setStatusValue',
+			data = {
+				statusName = name,
+				value = newStatus
+			}
+		})
+		playerStatus[name] = data
+	end
+end)
+
 -- Receive event from ox_inventory, when a satus item is used
 RegisterNetEvent('ox:status:update', function(name, value)
 	value = utils.percent(value, 1000000, 2) -- Because people use 1000000 as max value
