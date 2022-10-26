@@ -8,19 +8,23 @@
   "status": {
     "hunger": {
       "default": 100,
-      "onTick": -0.1
+      "onTick": -0.1,
+      "hideOnFull": false
     },
     "thirst": {
       "default": 100,
-      "onTick": -0.1
+      "onTick": -0.1,
+      "hideOnFull": false
     },
     "stress": {
       "default": 0,
-      "onTick": -0.1
+      "onTick": -0.1,
+      "hideOnFull": true
     },
     "drunk": {
       "default": 0,
-      "onTick": -0.1
+      "onTick": -0.1,
+      "hideOnFull": true
     }
   }
 }

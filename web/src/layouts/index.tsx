@@ -119,48 +119,56 @@ const Hud: React.FC = () => {
           />}
 
           {/* HUNGER */}
-          {hunger < 100 && <RingProgress sections={[{ value: hunger, color: hungerColor }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color={hungerColor} variant='light' radius='xl' size={44}>
-                  <TbMeat size={23} />
-                </ThemeIcon>
-              </Center>
-            }
-          />}
+          {(config.status.hunger.hideOnFull ? hunger < 100 : true) &&
+            <RingProgress sections={[{ value: hunger, color: hungerColor }]} thickness={6} size={55} roundCaps
+              label={
+                <Center>
+                  <ThemeIcon color={hungerColor} variant='light' radius='xl' size={44}>
+                    <TbMeat size={23} />
+                  </ThemeIcon>
+                </Center>
+              }
+            />
+          }
 
           {/* THIRST */}
-          {thirst < 100 && <RingProgress sections={[{ value: thirst, color: thirstColor }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color={thirstColor} variant='light' radius='xl' size={44}>
-                  <TbDroplet size={23} />
-                </ThemeIcon>
-              </Center>
-            }
-          />}
+          {(config.status.thirst.hideOnFull ? thirst < 100 : true) &&
+            <RingProgress sections={[{ value: thirst, color: thirstColor }]} thickness={6} size={55} roundCaps
+              label={
+                <Center>
+                  <ThemeIcon color={thirstColor} variant='light' radius='xl' size={44}>
+                    <TbDroplet size={23} />
+                  </ThemeIcon>
+                </Center>
+              }
+            />
+          }
 
           {/* STRESS */}
-          {stress > 0 && <RingProgress sections={[{ value: stress, color: 'orange' }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color='orange' variant='light' radius='xl' size={44}>
-                  <BiBrain size={23} />
-                </ThemeIcon>
-              </Center>
-            }
-          />}
+          {(config.status.stress.hideOnFull ? stress > 0 : true) &&
+            <RingProgress sections={[{ value: stress, color: 'orange' }]} thickness={6} size={55} roundCaps
+              label={
+                <Center>
+                  <ThemeIcon color='orange' variant='light' radius='xl' size={44}>
+                    <BiBrain size={23} />
+                  </ThemeIcon>
+                </Center>
+              }
+            />
+          }
 
           {/* DRUNK */}
-          {drunk > 0 && <RingProgress sections={[{ value: drunk, color: 'grape' }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color='grape' variant='light' radius='xl' size={44}>
-                  <TbGlass size={23} />
-                </ThemeIcon>
-              </Center>
-            }
-          />}
+          {(config.status.drunk.hideOnFull ? drunk > 0 : true) &&
+            <RingProgress sections={[{ value: drunk, color: 'grape' }]} thickness={6} size={55} roundCaps
+              label={
+                <Center>
+                  <ThemeIcon color='grape' variant='light' radius='xl' size={44}>
+                    <TbGlass size={23} />
+                  </ThemeIcon>
+                </Center>
+              }
+            />
+          }
 
           {/* OXYGEN */}
           {oxygen < 100 && <RingProgress sections={[{ value: oxygen, color: 'cyan' }]} thickness={6} size={55} roundCaps
