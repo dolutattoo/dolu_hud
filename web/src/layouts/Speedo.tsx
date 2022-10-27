@@ -1,6 +1,6 @@
 import React, { useState } from 'React'
 import { useNuiEvent } from '../hooks/useNuiEvent'
-import { Center, RingProgress, Text, ThemeIcon } from '@mantine/core'
+import Config from '../../../config.json'
 import { SiSpeedtest } from 'react-icons/si'
 
 const Speedo: React.FC = () => {
