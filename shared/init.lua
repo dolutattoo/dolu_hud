@@ -3,14 +3,19 @@ Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
 if IsDuplicityVersion() then
 	SetConvarReplicated('voice_enableUi', 'false') -- pma_voice
 else
+	playerStatus = {}
+
 	RegisterNetEvent('dolu_hud:onPlayerLoaded', function(data)
+		SetEntityMaxHealth(cache.ped, 200)
+
+		for k in pairs(Config.status) do
+			playerStatus[k] = data[k]
+		end
+
 		SendNUIMessage({
 			action = 'init',
 			data = data
 		})
-		data.voiceLevel = nil -- We only needed it on player loaded
-		playerStatus = data
-		SetEntityMaxHealth(cache.ped, 200)
 	end)
 
 	RegisterNetEvent('ox:playerLogout', function()
