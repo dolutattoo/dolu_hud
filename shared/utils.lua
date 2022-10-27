@@ -33,6 +33,6 @@ end
 ---@param msg string
 function utils.debug(level, msg)
 	if Config.debug and Config.debug >= level then
-		print('^2[dolu_hud][' .. level .. '] ^7' .. msg)
+		print('^2[' .. cache.resource .. '][' .. level .. '] ^7' .. msg)
 	end
 end
