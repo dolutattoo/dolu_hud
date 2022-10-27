@@ -1,6 +1,6 @@
 local function updateStatus(name, data)
 	if player?.loaded and Config.status[name] then
-		if data > 100 then
+		if data > 100 or data < -100 then
 			data = utils.percent(data, 1000000, 2) -- Because people use 1000000 as max value
 		end
 
