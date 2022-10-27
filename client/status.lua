@@ -1,5 +1,9 @@
-RegisterNetEvent('ox:setPlayerData', function(name, data)
+local function updateStatus(name, data)
 	if player?.loaded and Config.status[name] then
+		if data > 100 then
+			data = utils.percent(data, 1000000, 2) -- Because people use 1000000 as max value
+		end
+
 		local currentStatus = playerStatus[name]
 		local newStatus = utils.formatPercentage(data > 0 and currentStatus + data or currentStatus - data)
 		SendNUIMessage({
@@ -9,25 +13,16 @@ RegisterNetEvent('ox:setPlayerData', function(name, data)
 				value = newStatus
 			}
 		})
-		playerStatus[name] = data
+		playerStatus[name] = newStatus
+		utils.debug(1, "^7Action:add:^5" .. name, "^7Value added:^5" .. data, "^7New status:^5" .. newStatus .. "^7")
 	end
-end)
+end
+
+-- Receive Event from server when using 'player.setdb(statusName, value)'
+RegisterNetEvent('ox:setPlayerData', updateStatus)
 
 -- Receive event from ox_inventory, when a satus item is used
-RegisterNetEvent('ox:status:update', function(name, value)
-	value = utils.percent(value, 1000000, 2) -- Because people use 1000000 as max value
-	local currentStatus = playerStatus[name]
-	local newStatus = utils.formatPercentage(value > 0 and currentStatus + value or currentStatus - value)
-	SendNUIMessage({
-		action = 'setStatusValue',
-		data = {
-			statusName = name,
-			value = newStatus
-		}
-	})
-	playerStatus[name] = newStatus
-	utils.debug(1, "^7Action:add:^5" .. name, "^7Value added:^5" .. value, "^7New status:^5" .. newStatus .. "^7")
-end)
+RegisterNetEvent('ox:status:update', updateStatus)
 
 -- Status loop
 CreateThread(function()
