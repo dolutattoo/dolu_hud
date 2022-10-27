@@ -1,6 +1,5 @@
 import React, { useState } from 'React'
 import { Center, Group, RingProgress, ThemeIcon } from '@mantine/core'
-import { FiRadio } from 'react-icons/fi'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
 import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
@@ -97,7 +96,7 @@ const Hud: React.FC = () => {
             label={
               <Center>
                 <ThemeIcon color='gray.2' variant='light' radius='xl' size={44}>
-                  {isTalkingRadio > 0 ? <FiRadio size={23} /> : <BiMicrophone size={23} /> }
+                  {isTalkingRadio > 0 ? <TbRadio size={23} /> : <BiMicrophone size={23} /> }
                 </ThemeIcon>
               </Center>
             }
