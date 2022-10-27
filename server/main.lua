@@ -32,16 +32,25 @@ RegisterNetEvent('dolu_hud:updateStatus', function(status)
 end)
 
 lib.addCommand('group.admin', 'heal', function(source, args)
-	if source < 1 and not args.playerId then return end
-	local player = Ox.GetPlayer(args.playerId or source)
+	if source < 1 and not args.target then return end
+	local player = Ox.GetPlayer(args.target or source)
 	if player then
-		for key, value in pairs({ hunger = 100, thirst = 100, stress = 0, drunk = 0 }) do
-			player.setdb(key, value, true)
+		local status = {
+			voiceLevel = Player(player.source).state.proximity.index or 2,
+			health = 100,
+			armour = player.get('armour'),
+			hunger = 100,
+			thirst = 100,
+			stress = 0,
+			drunk = 0,
+		}
+		for key, value in pairs(status) do
+			player.setdb(key, value)
 		end
-		TriggerClientEvent('dolu_hud:healPlayer', player.source)
+		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
-end, {'playerId:number'})
+end, {'target:number'})
 
 
 -- dev
