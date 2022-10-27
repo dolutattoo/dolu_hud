@@ -1,15 +1,19 @@
 import React, { useState } from 'React'
+import { Center, Group, RingProgress, Text, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import Config from '../../../config.json'
-import { SiSpeedtest } from 'react-icons/si'
 
 const Speedo: React.FC = () => {
+  // Visibility
   const [visible, setVisible] = useState<boolean>(false)
+  useNuiEvent('toggleSpeedo', (state: boolean) => setVisible(state))
+
+  // ProgressBars states values
   const [speed, setSpeed] = useState<number>(0)
   const [gear, setGear] = useState<number>(0)
   const [rpm, setRpm] = useState<number>(0)
 
-  useNuiEvent('toggleSpeedo', (value: boolean) => setVisible(value))
+  // Set values from client script
   useNuiEvent('setSpeedo', (data: {speed: number, gear:number , rpm: number}) => {
     setSpeed(data.speed)
     setGear(data.gear)
@@ -30,7 +34,7 @@ const Speedo: React.FC = () => {
 
   return (
     <>
-        {visible &&
+        {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
           {/* SPEED */}
           <RingProgress sections={[{ value: (speed*100)/300, color: Config.speedColor }]} thickness={6} size={55} roundCaps
             label={
@@ -52,8 +56,7 @@ const Speedo: React.FC = () => {
               </Center>
             }
           />
-        </>
-        }
+        </Group>}
     </>
   )
 }
