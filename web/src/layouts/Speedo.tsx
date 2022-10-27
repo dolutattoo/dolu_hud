@@ -31,16 +31,18 @@ const Speedo: React.FC = () => {
   return (
     <>
         {visible &&
-        <>
-          <RingProgress sections={[{ value: (speed*100)/300, color: 'indigo' }]} thickness={6} size={55} roundCaps
+          {/* SPEED */}
+          <RingProgress sections={[{ value: (speed*100)/300, color: Config.speedColor }]} thickness={6} size={55} roundCaps
             label={
               <Center>
-                <ThemeIcon color='indigo' variant='light' radius='xl' size={44}>
+                <ThemeIcon color={Config.speedColor} variant='light' radius='xl' size={44}>
                   <Text color='gray.4' size='md' weight={600} >{speed}</Text>
                 </ThemeIcon>
               </Center>
             }
           />
+
+          {/* RPM */}
           <RingProgress sections={[{ value: (rpm*100)/1, color: getRpmColor((rpm*100)/1) }]} thickness={6} size={55} roundCaps
             label={
               <Center>

@@ -1,30 +1,44 @@
 {
   "debug": false,
   "speedo": true,
-  "speedoMetrics": "kmh",
   "hideRadarOnFoot": true,
   "updateInterval": 2500,
   "updateDatabaseInterval": 60000,
+  "speedoMetrics": "kmh",
+
+  "VoiceColor": "gray.2",
+  "HealthColor": "teal",
+  "ArmourColor": "blue",
+  "OxygenColor": "cyan",
+  "speedColor": "teal",
+
   "status": {
     "hunger": {
       "default": 100,
       "onTick": -0.1,
-      "hideOnFull": false
+      "hideOnFull": false,
+      "color": "yellow"
     },
+
     "thirst": {
       "default": 100,
       "onTick": -0.1,
-      "hideOnFull": false
+      "hideOnFull": false,
+      "color": "blue"
     },
+
     "stress": {
       "default": 0,
       "onTick": -0.1,
-      "hideOnFull": true
+      "hideOnFull": true,
+      "color": "orange"
     },
+
     "drunk": {
       "default": 0,
       "onTick": -0.1,
-      "hideOnFull": true
+      "hideOnFull": true,
+      "color": "grape"
     }
   }
 }
