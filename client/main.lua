@@ -1,24 +1,4 @@
 
--- Hide radar if not in a vehicle
-if Config.hideRadarOnFoot then
-	CreateThread(function()
-		local isRadarDisplayed, vehicle = false, false
-		DisplayRadar(isRadarDisplayed)
-		while true do
-			if player?.loaded and cache.vehicle ~= vehicle then
-				isRadarDisplayed = not isRadarDisplayed
-				vehicle = cache.vehicle
-				DisplayRadar(isRadarDisplayed)
-				SendNUIMessage({
-					action = 'toggleSpeedo',
-					data = vehicle and true or false
-				})
-			end
-			Wait(200)
-		end
-	end)
-end
-
 -- Get Health and Armour and send them to NUI when they change
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour
