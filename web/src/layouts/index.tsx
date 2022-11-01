@@ -50,7 +50,7 @@ const Hud: React.FC = () => {
   const [healthColor, setHealthColor] = useState<string>('red')
   const [hungerColor, setHungerColor] = useState<string>(Config.status.hunger.color)
   const [thirstColor, setThirstColor] = useState<string>(Config.status.thirst.color)
-  const [oxygenColor, setOxygenColor] = useState<string>(Config.status.thirst.color)
+  const [oxygenColor, setOxygenColor] = useState<string>(Config.OxygenColor)
 
   const getColor = (value: number, color:string) => {
     if (value > 10) { return color } else { return 'red' }
