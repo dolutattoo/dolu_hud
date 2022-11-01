@@ -55,10 +55,10 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 		local status = {
 			health = 100,
 			armour = player.get('armour'),
-			hunger = 100,
-			thirst = 100,
-			stress = 0,
-			drunk = 0,
+			hunger = Config.status.hunger and 100 or nil,
+			thirst = Config.status.thirst and 100 or nil,
+			stress = Config.status.stress and 0 or nil,
+			drunk = Config.status.drunk and 0 or nil,
 		}
 		for key, value in pairs(status) do
 			player.setdb(key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
