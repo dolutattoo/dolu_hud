@@ -1,25 +1,19 @@
 -- Retrieve status from database and send it to the player
 local function initStatus(player, data)
 	local data = player.get()
+	local status = {}
 
-	-- Create status if they doesn't exists
 	for name, v in pairs(Config.status) do
+		-- Create status if they doesn't exists
 		if not data[name] then
-			player.setdb(name, v.default)
 			data[name] = v.default
+			player.setdb(name, v.default)
 		end
+
+		status[name] = data[name]
 	end
 
-	local status = {
-		voiceLevel = Player(player.source).state.proximity.index or 2,
-		health = data.health,
-		armour = data.armour,
-		hunger = data.hunger,
-		thirst = data.thirst,
-		stress = data.stress,
-		drunk = data.drunk,
-	}
-
+	status.voiceLevel = Player(player.source).state.proximity.index or 2
 	TriggerClientEvent('dolu_hud:initStatus', player.source, status)
 end
 
