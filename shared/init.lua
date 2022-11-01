@@ -12,28 +12,20 @@ else
 			playerStatus[k] = data[k]
 		end
 
-		SendNUIMessage({
-			action = 'init',
-			data = data
-		})
+		player.loaded = true
+		SendNUIMessage({ action = 'init', data = data })
 	end)
 
 	RegisterNetEvent('ox:playerLogout', function()
+		SendNUIMessage({ action = 'toggleVisibility', data = false })
 		TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
-		SendNUIMessage({
-			action = 'toggleVisibility',
-			data = false
-		})
 		playerStatus = {}
-		if nuiReady then
-			nuiReady = false
-			player.loaded = false
-		end
+		player.loaded = false
+		nuiReady = false
 	end)
 
 	RegisterNUICallback('nuiReady', function(_, cb)
 		nuiReady = true
-		player.loaded = true
 		cb(1)
 	end)
 end

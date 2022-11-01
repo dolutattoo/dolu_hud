@@ -54,7 +54,7 @@ end)
 
 lib.addCommand('group.admin', 'heal', function(source, args)
 	if source < 1 and not args.target then return end
-	local player = Ox.GetPlayer(args.target or source)
+	local player = Ox.GetPlayer(args.target)
 	if player then
 		local status = {
 			voiceLevel = Player(player.source).state.proximity.index or 2,
@@ -66,7 +66,7 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 			drunk = 0,
 		}
 		for key, value in pairs(status) do
-			player.setdb(key, value)
+			player.setdb(key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
 		end
 		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 		utils.debug(1, "Player " .. player.source .. " healed!")
@@ -74,13 +74,13 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 end, {'target:number'})
 
 
--- dev
-RegisterCommand('demo', function(source, args)
-	local player = Ox.GetPlayer(args[1] or source)
+-- Dev
+lib.addCommand('group.admin', 'demo', function(source, args)
+	if source < 1 and not args.target then return end
+	local player = Ox.GetPlayer(args.target)
 	if player then
 		for key, value in pairs({ hunger = 10, thirst = 5, stress = 80, drunk = 70 }) do
 			player.setdb(key, value, true)
 		end
-		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
-end, false)
+end, {'target:number'})
