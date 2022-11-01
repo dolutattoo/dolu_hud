@@ -28,4 +28,15 @@ else
 		nuiReady = true
 		cb(1)
 	end)
+
+	-- Death handler
+	AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
+		player.dead = value
+		if not nuiReady or not player?.loaded then return end
+		if player.dead then
+			SendNUIMessage({ action = 'toggleVisibility', data = false })
+		else
+			SendNUIMessage({ action = 'toggleVisibility', data = true })
+		end
+	end)
 end
