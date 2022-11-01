@@ -86,10 +86,6 @@ const Hud: React.FC = () => {
   return (
     <>
         {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
-
-          {/* SPEEDO */}
-          {/* {Config.speedo && <Speedo />} */}
-
           {/* VOICE */}
           {voiceLevel > 0 && <RingProgress sections={[{ value: voiceLevel, color: 'gray.2' }]} thickness={6} size={55} roundCaps
             label={
