@@ -39,8 +39,10 @@ RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	local player = Ox.GetPlayer(source)
 	if player then
 		for name, value in pairs(status) do
-			player.setdb(name, value)
-			utils.debug(2, "Saved status for player " .. player.source .. " - " .. name .. ': ' .. value)
+			if name ~= 'voiceLevel' then
+				player.setdb(name, value)
+				utils.debug(2, "Saved status for player " .. player.source .. " - " .. name .. ': ' .. value)
+			end
 		end
 	end
 	utils.debug(1, "Saved status for player " .. player.source)
@@ -62,6 +64,7 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 		for key, value in pairs(status) do
 			player.setdb(key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
 		end
+		status.voiceLevel = Player(player.source).state.proximity.index or 2
 		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
