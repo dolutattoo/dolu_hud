@@ -44,7 +44,6 @@ const Hud: React.FC = () => {
     setStress(data.stress)
     setDrunk(data.drunk)
     fetchNui('nuiReady')
-    setVisible(true)
   })
 
   // Colors states

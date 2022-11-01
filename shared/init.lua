@@ -12,6 +12,7 @@ else
 			playerStatus[k] = data[k]
 		end
 
+		while not player do Wait(100) end
 		player.loaded = true
 		SendNUIMessage({ action = 'init', data = data })
 	end)
@@ -26,6 +27,7 @@ else
 
 	RegisterNUICallback('nuiReady', function(_, cb)
 		nuiReady = true
+		SendNUIMessage({ action = 'toggleVisibility', data = true })
 		cb(1)
 	end)
 
