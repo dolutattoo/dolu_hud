@@ -1,13 +1,13 @@
-name: Build
+name: Release
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   create-release:
-    name: Build and Create Tagged release
+    name: Build and create tagged release
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +23,20 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 7.14.1
+          version: 6.20.3
 
       - name: Get variables
         id: get_vars
         run: |
-          echo "SHORT_SHA={$(git rev-parse --short HEAD)}" >> $GITHUB_OUTPUT
-          echo "DATE={$(date +'%D')}" >> $GITHUB_OUTPUT
+          echo '::set-output name=SHORT_SHA::$(git rev-parse --short HEAD)'
+          echo '::set-output name=DATE::$(date +'%D')'
 
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-          cache: 'pnpm'
-          cache-dependency-path: 'web/pnpm-lock.yaml'
+          cache: "pnpm"
+          cache-dependency-path: "web/pnpm-lock.yaml"
 
       - name: Install dependencies
         run: pnpm i
@@ -60,7 +60,7 @@ jobs:
           push: true
           author_name: Manifest Bumper
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
-          message: 'chore: bump manifest version to ${{ github.ref_name }}'
+          message: "chore: bump manifest version to ${{ github.ref_name }}"
 
       - name: Update tag ref
         uses: EndBug/latest-tag@latest
@@ -70,17 +70,18 @@ jobs:
       - name: Bundle files
         run: |
           mkdir -p ./temp/dolu_hud
-          mkdir -p ./temp/dolu_hud/web
-          cp ./{README.md,config.json,fxmanifest.lua} ./temp/dolu_hud
+          mkdir -p ./temp/dolu_hud/web/
+          cp ./{README.md,fxmanifest.lua,config.json} ./temp/dolu_hud
           cp -r ./{client,server,shared} ./temp/dolu_hud
-          cp -r ./web/build ./temp/dolu_hud/web/build
+          cp -r ./web/build ./temp/dolu_hud/web/
           cd ./temp && zip -r ../dolu_hud.zip ./dolu_hud
+
       - name: Create Release
-        uses: 'marvinpinto/action-automatic-releases@v1.2.1'
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
         id: auto_release
         with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          title: '${{ env.RELEASE_VERSION }}'
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          title: ${{ env.RELEASE_VERSION }}
           prerelease: true
           files: dolu_hud.zip
 
