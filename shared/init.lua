@@ -5,7 +5,7 @@ if IsDuplicityVersion() then
 else
 	playerStatus = {}
 
-	RegisterNetEvent('dolu_hud:onPlayerLoaded', function(data)
+	RegisterNetEvent('dolu_hud:initStatus', function(data)
 		SetEntityMaxHealth(cache.ped, 200)
 
 		for k in pairs(Config.status) do
