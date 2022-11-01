@@ -53,7 +53,6 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 	local player = Ox.GetPlayer(args.target)
 	if player then
 		local status = {
-			voiceLevel = Player(player.source).state.proximity.index or 2,
 			health = 100,
 			armour = player.get('armour'),
 			hunger = 100,
