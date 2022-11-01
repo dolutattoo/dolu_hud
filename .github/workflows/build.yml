@@ -23,7 +23,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.20.3
+          version: 7.14.1
 
       - name: Get variables
         id: get_vars
@@ -71,8 +71,8 @@ jobs:
         run: |
           mkdir -p ./temp/dolu_hud
           mkdir -p ./temp/dolu_hud/web
-          cp ./{LICENSE,README.md,database.sql,fxmanifest.lua} ./temp/dolu_hud
-          cp -r ./{client,server,shared,imports} ./temp/dolu_hud
+          cp ./{README.md,config.json,fxmanifest.lua} ./temp/dolu_hud
+          cp -r ./{client,server,shared} ./temp/dolu_hud
           cp -r ./web/build ./temp/dolu_hud/web/build
           cd ./temp && zip -r ../dolu_hud.zip ./dolu_hud
       - name: Create Release
@@ -87,10 +87,3 @@ jobs:
         env:
           CI: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish npm package
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          package: './lib/package.json'
-          access: 'public'
