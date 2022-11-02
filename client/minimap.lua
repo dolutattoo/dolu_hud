@@ -21,7 +21,7 @@ if Config.hideRadarOnFoot then
 		local isRadarDisplayed, vehicle = false, false
 		DisplayRadar(isRadarDisplayed)
 		while true do
-			if player?.loaded and cache.vehicle ~= vehicle then
+			if PlayerIsLoaded and cache.vehicle ~= vehicle then
 				isRadarDisplayed = not isRadarDisplayed
 				vehicle = cache.vehicle
 				DisplayRadar(isRadarDisplayed)

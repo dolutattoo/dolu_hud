@@ -1,19 +1,21 @@
 -- Retrieve status from database and send it to the player
-local function initStatus(player, data)
-	local data = player.get()
+local function initStatus(player)
+	local data = GetResourceKvpString(('%s:status'):format(player.charid))
+	local decode = json.decode(data) or {}
 	local status = {}
 
 	for name, v in pairs(Config.status) do
 		-- Create status if they doesn't exists
-		if not data[name] then
-			data[name] = v.default
-			player.setdb(name, v.default)
+		if not decode[name] then
+			decode[name] = v.default
+			TriggerClientEvent('dolu_hud:setPlayerData', player.source, name, v.default)
 		end
 
-		status[name] = data[name]
+		status[name] = decode[name]
 	end
 
 	status.voiceLevel = Player(player.source).state.proximity.index or 2
+	SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
 	TriggerClientEvent('dolu_hud:initStatus', player.source, status)
 end
 
@@ -38,12 +40,7 @@ end)
 RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	local player = Ox.GetPlayer(source)
 	if player then
-		for name, value in pairs(status) do
-			if name ~= 'voiceLevel' then
-				player.setdb(name, value)
-				utils.debug(2, "Saved status for player " .. player.source .. " - " .. name .. ': ' .. value)
-			end
-		end
+		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
 	end
 	utils.debug(1, "Saved status for player " .. player.source)
 end)
@@ -60,15 +57,17 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 			stress = Config.status.stress and 0 or nil,
 			drunk = Config.status.drunk and 0 or nil,
 		}
+
 		for key, value in pairs(status) do
-			player.setdb(key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
+			TriggerClientEvent('dolu_hud:setPlayerData', player.source, key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
 		end
+
 		status.voiceLevel = Player(player.source).state.proximity.index or 2
+		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
 		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
 end, {'target:number'})
-
 
 -- Dev
 lib.addCommand('group.admin', 'demo', function(source, args)

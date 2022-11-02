@@ -3,7 +3,7 @@
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour
 	while true do
-		if nuiReady and player?.loaded then
+		if nuiReady and PlayerIsLoaded then
 			local playerPed = cache.ped
 
 			local currentHealth = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
@@ -38,7 +38,7 @@ end)
 CreateThread(function()
 	local lastSpeed = 0
 	while true do
-		if player?.loaded and cache.seat and not IsPedDeadOrDying(cache.ped) then
+		if PlayerIsLoaded and cache.seat and not IsPedDeadOrDying(cache.ped) then
 			if DoesEntityExist(cache.vehicle) then
 				local currentSpeed = GetEntitySpeed(cache.vehicle)*(Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
 				if oldSpeed ~= currentSpeed then
@@ -59,7 +59,7 @@ CreateThread(function()
 end)
 
 RegisterNetEvent('dolu_hud:healPlayer', function(status)
-	if player?.loaded and IsPedDeadOrDying(cache.ped) then return end
+	if PlayerIsLoaded and IsPedDeadOrDying(cache.ped) then return end
 	SetEntityHealth(cache.ped, 200)
 	TriggerEvent('dolu_hud:initStatus', status) -- Use the init event to send all status to nui
 end)
