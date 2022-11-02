@@ -19,9 +19,6 @@ local function updateStatus(name, data)
 	end
 end
 
--- Receive Event from server when using 'player.setdb(statusName, value, true)'
-RegisterNetEvent('dolu_hud:setPlayerData', updateStatus)
-
 -- Receive event from ox_inventory, when a satus item is used
 RegisterNetEvent('ox:status:update', updateStatus)
 

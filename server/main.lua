@@ -1,22 +1,28 @@
 -- Retrieve status from database and send it to the player
 local function initStatus(player)
-	local data = GetResourceKvpString(('%s:status'):format(player.charid))
-	local decode = json.decode(data) or {}
-	local status = {}
+	local data = json.decode(GetResourceKvpString(('%s:status'):format(player.charid))) or {}
+	local status, created = {}, false
 
 	for name, v in pairs(Config.status) do
 		-- Create status if they doesn't exists
-		if not decode[name] then
-			decode[name] = v.default
-			TriggerClientEvent('dolu_hud:setPlayerData', player.source, name, v.default)
+		if not data[name] then
+			data[name] = v.default
+			created = true
 		end
 
-		status[name] = decode[name]
+		status[name] = data[name]
 	end
 
-	status.voiceLevel = Player(player.source).state.proximity.index or 2
-	SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
-	TriggerClientEvent('dolu_hud:initStatus', player.source, status)
+	-- If any status just got created, update kvp
+	if created then
+		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
+	end
+
+	TriggerClientEvent('dolu_hud:init', player.source, {
+		health = player.get('health'),
+		armour = player.get('armour'),
+		status = status
+	})
 end
 
 -- Send status when resource restart
@@ -41,8 +47,8 @@ RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	local player = Ox.GetPlayer(source)
 	if player then
 		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
+		utils.debug(1, "Saved status for player " .. player.source)
 	end
-	utils.debug(1, "Saved status for player " .. player.source)
 end)
 
 lib.addCommand('group.admin', 'heal', function(source, args)
@@ -50,21 +56,19 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 	local player = Ox.GetPlayer(args.target)
 	if player then
 		local status = {
-			health = 100,
-			armour = player.get('armour'),
 			hunger = Config.status.hunger and 100 or nil,
 			thirst = Config.status.thirst and 100 or nil,
 			stress = Config.status.stress and 0 or nil,
 			drunk = Config.status.drunk and 0 or nil,
 		}
 
-		for key, value in pairs(status) do
-			TriggerClientEvent('dolu_hud:setPlayerData', player.source, key, value) -- not replicated, let's use the event below since we need to apply health/armour client-side.
-		end
+		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
+			health = 100,
+			armour = player.get('armour'),
+			status = status
+		})
 
-		status.voiceLevel = Player(player.source).state.proximity.index or 2
 		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
-		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 		utils.debug(1, "Player " .. player.source .. " healed!")
 	end
 end, {'target:number'})
@@ -75,13 +79,16 @@ lib.addCommand('group.admin', 'demo', function(source, args)
 	local player = Ox.GetPlayer(args.target)
 	if player then
 		local status = {
-			health = math.random(50, 100),
-			armour = math.random(0, 100),
 			hunger = math.random(0, 100),
 			thirst = math.random(0, 100),
 			stress = math.random(0, 100),
 			drunk = math.random(0, 100),
 		}
-		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
+		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
+			health = math.random(150, 200),
+			thirst = math.random(0, 100),
+			status = status
+		})
+		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
 	end
 end, {'target:number'})

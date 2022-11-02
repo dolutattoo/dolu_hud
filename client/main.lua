@@ -58,10 +58,21 @@ CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('dolu_hud:healPlayer', function(status)
+RegisterNetEvent('dolu_hud:healPlayer', function(data)
 	if PlayerIsLoaded and IsPedDeadOrDying(cache.ped) then return end
-	SetEntityHealth(cache.ped, 200)
-	TriggerEvent('dolu_hud:initStatus', status) -- Use the init event to send all status to nui
+
+	SetEntityHealth(cache.ped, data.health)
+
+	if data.armour then
+		SetPedArmour(cache.ped, data.armour)
+	end
+
+	-- Sending all data to nui using the ini event
+	TriggerEvent('dolu_hud:init', {
+		health = data.health,
+		armour = data.armour,
+		status = data.status
+	})
 end)
 
 -- pma_voice

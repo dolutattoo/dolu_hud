@@ -35,14 +35,14 @@ const Hud: React.FC = () => {
   const [oxygen, setOxygen] = useState<number>(100)
 
   // Init values from client script
-  useNuiEvent('init', (data: StatusProps) => {
+  useNuiEvent('init', (data: { health: number, armour: number, voiceLevel: number, status: StatusProps }) => {
     setVoiceLevel(data.voiceLevel*33.3333)
     setHealth(data.health)
     setArmour(data.armour)
-    setHunger(data.hunger)
-    setThirst(data.thirst)
-    setStress(data.stress)
-    setDrunk(data.drunk)
+    setHunger(data.status.hunger)
+    setThirst(data.status.thirst)
+    setStress(data.status.stress)
+    setDrunk(data.status.drunk)
     fetchNui('nuiReady')
   })
 
