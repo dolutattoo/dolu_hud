@@ -12,8 +12,7 @@ else
 			playerStatus[k] = data[k]
 		end
 
-		while not player do Wait(100) end
-		player.loaded = true
+		PlayerIsLoaded = true
 		SendNUIMessage({ action = 'init', data = data })
 	end)
 
@@ -21,7 +20,7 @@ else
 		SendNUIMessage({ action = 'toggleVisibility', data = false })
 		TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
 		playerStatus = {}
-		player.loaded = false
+		PlayerIsLoaded = false
 		nuiReady = false
 	end)
 
@@ -33,9 +32,9 @@ else
 
 	-- Death handler
 	AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
-		player.dead = value
-		if not nuiReady or not player?.loaded then return end
-		if player.dead then
+		PlayerIsDead = value
+		if not nuiReady or not PlayerIsLoaded then return end
+		if PlayerIsDead then
 			SendNUIMessage({ action = 'toggleVisibility', data = false })
 		else
 			SendNUIMessage({ action = 'toggleVisibility', data = true })
