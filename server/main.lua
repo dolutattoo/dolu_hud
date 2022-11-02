@@ -36,7 +36,7 @@ AddEventHandler('ox:playerLoaded', function(source, userid, charid)
 	initStatus(player)
 end)
 
--- Save status in database
+-- Save status in kvp
 RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	local player = Ox.GetPlayer(source)
 	if player then
@@ -74,8 +74,14 @@ lib.addCommand('group.admin', 'demo', function(source, args)
 	if source < 1 and not args.target then return end
 	local player = Ox.GetPlayer(args.target)
 	if player then
-		for key, value in pairs({ hunger = 10, thirst = 5, stress = 80, drunk = 70 }) do
-			player.setdb(key, value, true)
-		end
+		local status = {
+			health = math.random(50, 100),
+			armour = math.random(0, 100),
+			hunger = math.random(0, 100),
+			thirst = math.random(0, 100),
+			stress = math.random(0, 100),
+			drunk = math.random(0, 100),
+		}
+		TriggerClientEvent('dolu_hud:healPlayer', player.source, status)
 	end
 end, {'target:number'})
