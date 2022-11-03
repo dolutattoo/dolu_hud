@@ -25,7 +25,7 @@ RegisterNetEvent('ox:status:update', updateStatus)
 -- Status loop
 CreateThread(function()
 	while true do
-		Wait(Config.updateInterval)
+		Wait(Config.statusClientInterval)
 
 		if nuiReady and PlayerIsLoaded then
 			for name, value in pairs(playerStatus) do
@@ -65,6 +65,6 @@ CreateThread(function()
 			TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
 			utils.debug(1, 'Saving status in database')
 		end
-		Wait(Config.updateDatabaseInterval)
+		Wait(Config.serverStatusInterval)
 	end
 end)

@@ -2,8 +2,8 @@
   "debug": false,
   "speedo": true,
   "hideRadarOnFoot": true,
-  "updateInterval": 2500,
-  "updateDatabaseInterval": 60000,
+  "statusClientInterval": 2500,
+  "serverStatusInterval": 60000,
   "speedoMetrics": "kmh",
 
   "VoiceColor": "gray.2",
