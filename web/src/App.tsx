@@ -25,8 +25,6 @@ const App: React.FC = () => {
     <>
       <Box className={classes.status}>
         <Hud />
-      </Box>
-      <Box className={classes.speedo}>
         <Speedo />
       </Box>
     </>

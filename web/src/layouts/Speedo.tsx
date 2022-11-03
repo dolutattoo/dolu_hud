@@ -1,6 +1,8 @@
 import React, { useState } from 'React'
-import { Center, Group, RingProgress, Text, ThemeIcon } from '@mantine/core'
+import { Box, Center, Group, RingProgress, Text, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
+import { Progress } from 'react-sweet-progress'
+import "react-sweet-progress/lib/style.css"
 import Config from '../../../config.json'
 
 const Speedo: React.FC = () => {
@@ -17,46 +19,92 @@ const Speedo: React.FC = () => {
   useNuiEvent('setSpeedo', (data: {speed: number, gear:number , rpm: number}) => {
     setSpeed(data.speed)
     setGear(data.gear)
-    setRpm(data.rpm)
+    setRpm((data.rpm*100)/1)
   })
 
   const getRpmColor = (value: number) => {
-    if (value < 50) {
+    if (value < 30) {
       return 'teal'
-    } else if (value < 75) {
+    } else if (value < 50) {
       return 'blue'
-    } else if (value < 90) {
+    } else if (value < 75) {
       return 'yellow'
-    } else {
+    } else if (value < 95) {
       return 'orange'
+    } else {
+      return 'red'
     }
   }
 
   return (
     <>
-        {visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
-          {/* SPEED */}
-          <RingProgress sections={[{ value: (speed*100)/300, color: Config.speedColor }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color={Config.speedColor} variant='light' radius='xl' size={44}>
-                  <Text color='gray.4' size='md' weight={600} >{speed}</Text>
-                </ThemeIcon>
-              </Center>
-            }
-          />
+        {visible &&
+          <>
 
-          {/* RPM */}
-          <RingProgress sections={[{ value: (rpm*100)/1, color: getRpmColor((rpm*100)/1) }]} thickness={6} size={55} roundCaps
-            label={
-              <Center>
-                <ThemeIcon color='indigo' variant='light' radius='xl' size={44}>
-                  <Text color='gray.4' size='md' weight={600} >{gear}</Text>
-                </ThemeIcon>
-              </Center>
-            }
-          />
-        </Group>}
+            <Progress
+              style={{ transform: 'rotate(-90deg)', position: 'fixed', bottom: '1vh' }}
+              type="circle"
+              percent={50}
+              status="active"
+              width="8vw"
+              strokeWidth={7}
+              theme={{
+                default: {
+                  color: 'rgba(0, 0, 0, 0.7)',
+                  trailColor: 'rgba(0, 0, 0, 0)'
+                },
+                active: {
+                  color: 'rgba(0, 0, 0, 0.7)',
+                  trailColor: 'rgba(0, 0, 0, 0)'
+                }
+              }}
+            />
+
+            <Progress
+              style={{ transform: 'rotate(-90deg)', position: 'absolute', bottom: '1vh' }}
+              type="circle"
+              percent={(rpm)/2}
+              status="active"
+              width="8vw"
+              strokeWidth={7}
+              theme={{
+                default: {
+                  color: getRpmColor(rpm),
+                  trailColor: 'rgba(0, 0, 0, 0)'
+                },
+                active: {
+                  color: getRpmColor(rpm),
+                  trailColor: 'rgba(0, 0, 0, 0)'
+                }
+              }}
+            />
+
+            <Center>
+              <Box
+                style={{ bottom: '7vh', width: '5vw', position: 'fixed', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '0.7vh', justifyContent: 'center' }}
+              >
+                <Center>
+                  <Group spacing={1}>
+                    <Text
+                      color='gray.4'
+                      size='md'
+                      weight={600}
+                    >
+                      {speed}
+                    </Text>
+                    <Text
+                      color='gray.4'
+                      size='xs'
+                      weight={400}
+                    >
+                      { Config.speedoMetrics === 'kmh' ? 'Km/h' : 'mph' }
+                    </Text>
+                  </Group>
+                </Center>
+              </Box>
+            </Center>
+          </>
+        }
     </>
   )
 }
