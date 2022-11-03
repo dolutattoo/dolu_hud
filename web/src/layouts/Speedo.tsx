@@ -41,6 +41,7 @@ const Speedo: React.FC = () => {
         {visible &&
           <>
 
+            {/* RPM PROGRESS TRAIL */}
             <Progress
               style={{ transform: 'rotate(-90deg)', position: 'fixed', bottom: '1vh' }}
               type="circle"
@@ -60,6 +61,7 @@ const Speedo: React.FC = () => {
               }}
             />
 
+            {/* RPM PROGRESS */}
             <Progress
               style={{ transform: 'rotate(-90deg)', position: 'absolute', bottom: '1vh' }}
               type="circle"
