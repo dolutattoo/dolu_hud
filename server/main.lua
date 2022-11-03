@@ -59,11 +59,11 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 			hunger = Config.status.hunger and 100 or nil,
 			thirst = Config.status.thirst and 100 or nil,
 			stress = Config.status.stress and 0 or nil,
-			drunk = Config.status.drunk and 0 or nil,
+			drunk = Config.status.drunk and 0 or nil
 		}
 
 		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
-			health = 100,
+			health = 200,
 			armour = player.get('armour'),
 			status = status
 		})
@@ -86,7 +86,7 @@ lib.addCommand('group.admin', 'demo', function(source, args)
 		}
 		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
 			health = math.random(150, 200),
-			thirst = math.random(0, 100),
+			armour = math.random(0, 100),
 			status = status
 		})
 		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
