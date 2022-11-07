@@ -31,8 +31,8 @@ end
 ---Beautiful debugging logs
 ---@param level number 1: standard logs, 2: everything
 ---@param msg string
-function utils.debug(level, msg)
+function utils.debug(level, ...)
 	if Config.debug and Config.debug >= (level == true and 1 or level) then
-		print('^2[' .. cache.resource .. '][' .. level .. '] ^7' .. msg)
+		print('^2[' .. cache.resource .. '][' .. level .. '] ^7', ...)
 	end
 end
