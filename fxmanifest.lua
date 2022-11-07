@@ -30,7 +30,8 @@ client_scripts {
 	'client/main.lua',
 	'client/minimap.lua',
 	'client/status.lua',
-	'client/oxygen.lua'
+	'client/oxygen.lua',
+	'client/seatbelt.lua'
 }
 
 server_scripts {

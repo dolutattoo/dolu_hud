@@ -1,33 +1,62 @@
 import React, { useState } from 'React'
-import { Box, Center, Group, RingProgress, Text, ThemeIcon } from '@mantine/core'
+import { Box, Center, Image, Progress, RingProgress, Text, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
-import { Progress } from 'react-sweet-progress'
-import "react-sweet-progress/lib/style.css"
 import Config from '../../../config.json'
+import { BiGasPump } from 'react-icons/bi'
+import seatbeltIcon from '../img/seatbelt.svg'
 
 const Speedo: React.FC = () => {
   // Visibility
   const [visible, setVisible] = useState<boolean>(false)
   useNuiEvent('toggleSpeedo', (state: boolean) => setVisible(state))
 
+  // If main hud is toggled off, hide speedo too.
+  useNuiEvent('toggleVisibility', (state: boolean) => {
+    if (state === false) setVisible(false)
+  })
+
+  // Seatbelt
+  const [seatbelt, setSeatbelt] = useState<boolean>(false)
+  const [seatbeltColor, setSeatbeltColor] = useState<string>('rgba(200, 0, 0, 0.7)')
+  useNuiEvent('setSeatbelt', (state: boolean) => {
+    setSeatbelt(state)
+
+    console.log(state, seatbelt);
+
+
+    if (state) {
+      setSeatbeltColor('rgba(0, 0, 0, 0.7)')
+    } else {
+      setSeatbeltColor('rgba(200, 0, 0, 0.7)')
+    }
+  })
+
   // ProgressBars states values
   const [speed, setSpeed] = useState<number>(0)
   const [gear, setGear] = useState<number>(0)
   const [rpm, setRpm] = useState<number>(0)
+  const [fuelLevel, setFuelLevel] = useState<number>(70)
+  const [fuelLevelColor, setFuelLevelColor] = useState<string>('red')
+
+  const getColor = (value: number, color:string) => {
+    if (value > 10) { return color } else { return 'orange' }
+  }
 
   // Set values from client script
-  useNuiEvent('setSpeedo', (data: {speed: number, gear:number , rpm: number}) => {
+  useNuiEvent('setSpeedo', (data: {speed: number, gear:number , rpm: number, fuelLevel: number}) => {
     setSpeed(data.speed)
     setGear(data.gear)
     setRpm((data.rpm*100)/1)
+    setFuelLevel(data.fuelLevel)
+    setFuelLevelColor(getColor(data.fuelLevel, 'gray.4'))
   })
 
   const getRpmColor = (value: number) => {
-    if (value < 30) {
+    if (value < 45) {
       return 'teal'
-    } else if (value < 50) {
-      return 'blue'
-    } else if (value < 75) {
+    } else if (value < 60) {
+      return 'green'
+    } else if (value < 85) {
       return 'yellow'
     } else if (value < 95) {
       return 'orange'
@@ -40,69 +69,62 @@ const Speedo: React.FC = () => {
     <>
         {visible &&
           <>
-
-            {/* RPM PROGRESS TRAIL */}
-            <Progress
-              style={{ transform: 'rotate(-90deg)', position: 'fixed', bottom: '1vh' }}
-              type="circle"
-              percent={50}
-              status="active"
-              width="8vw"
-              strokeWidth={7}
-              theme={{
-                default: {
-                  color: 'rgba(0, 0, 0, 0.7)',
-                  trailColor: 'rgba(0, 0, 0, 0)'
-                },
-                active: {
-                  color: 'rgba(0, 0, 0, 0.7)',
-                  trailColor: 'rgba(0, 0, 0, 0)'
-                }
-              }}
-            />
-
-            {/* RPM PROGRESS */}
-            <Progress
-              style={{ transform: 'rotate(-90deg)', position: 'absolute', bottom: '1vh' }}
-              type="circle"
-              percent={(rpm)/2}
-              status="active"
-              width="8vw"
-              strokeWidth={7}
-              theme={{
-                default: {
-                  color: getRpmColor(rpm),
-                  trailColor: 'rgba(0, 0, 0, 0)'
-                },
-                active: {
-                  color: getRpmColor(rpm),
-                  trailColor: 'rgba(0, 0, 0, 0)'
-                }
-              }}
-            />
-
             <Center>
               <Box
-                style={{ bottom: '7vh', width: '5vw', position: 'fixed', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '0.7vh', justifyContent: 'center' }}
+                style={{ position: 'fixed', bottom: '7vh', width: '200px', height: '80px', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '0.7vh', justifyContent: 'center' }}
               >
-                <Center>
-                  <Group spacing={1}>
-                    <Text
-                      color='gray.4'
-                      size='md'
-                      weight={600}
-                    >
-                      {speed}
-                    </Text>
-                    <Text
-                      color='gray.4'
-                      size='xs'
-                      weight={400}
-                    >
-                      { Config.speedoMetrics === 'kmh' ? 'Km/h' : 'mph' }
-                    </Text>
-                  </Group>
-                </Center>
+                {/* RPM */}
+                <Progress
+                  value={rpm}
+                  color={getRpmColor(rpm)}
+                  style={{ margin: '7px' }}
+                />
+
+                {/* SEATBELT */}
+                <div style={{ position: 'relative', margin: '5px', float: 'left' }}>
+                  <img
+                    src={seatbeltIcon}
+                    alt="seatbeltIcon"
+                    style={{ margin: '5px', width: '30px', fill: seatbeltColor, backgroundColor: seatbeltColor, borderRadius: '7px' }}
+                  />
+                </div>
+
+                {/* SPEED */}
+                <div style={{ position: 'absolute', marginLeft: '80px' }}>
+                  <Center>
+                      <Text
+                        color='gray.4'
+                        size={20}
+                        weight={800}
+                        style={{ marginTop: '-2px' }}
+                      >
+                        {speed}
+                      </Text>
+                  </Center>
+                  <Center>
+                      <Text
+                        color='gray.4'
+                        size='sm'
+                        weight={800}
+                        style={{ marginBottom: '-10px' }}
+                      >
+                        { Config.speedoMetrics === 'kmh' ? 'Km/h' : 'mph' }
+                      </Text>
+                  </Center>
+                </div>
+
+                {/* FUEL */}
+                <div style={{ position: 'relative', margin: '5px', float: 'right' }}>
+                  {fuelLevel !== undefined && <RingProgress sections={[{ value: fuelLevel, color: fuelLevelColor }]} thickness={6/1.2} size={55/1.2} roundCaps
+                    label={
+                      <Center>
+                        <ThemeIcon color={fuelLevelColor} variant='light' radius='xl' size={44/1.2}>
+                          <BiGasPump size={23} />
+                        </ThemeIcon>
+                      </Center>
+                    }
+                  />}
+                </div>
               </Box>
             </Center>
           </>

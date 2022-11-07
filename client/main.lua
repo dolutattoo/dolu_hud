@@ -48,7 +48,8 @@ CreateThread(function()
 						data = {
 							speed = math.floor(currentSpeed),
 							gear = GetVehicleCurrentGear(cache.vehicle),
-							rpm = GetVehicleCurrentRpm(cache.vehicle)
+							rpm = GetVehicleCurrentRpm(cache.vehicle),
+							fuelLevel = GetVehicleFuelLevel(cache.vehicle)
 						}
 					})
 				end
