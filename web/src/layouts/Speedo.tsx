@@ -21,11 +21,8 @@ const Speedo: React.FC = () => {
   useNuiEvent('setSeatbelt', (state: boolean) => {
     setSeatbelt(state)
 
-    console.log(state, seatbelt);
-
-
     if (state) {
-      setSeatbeltColor('rgba(0, 0, 0, 0.7)')
+      setSeatbeltColor('rgba(200, 200, 200, 0.9)')
     } else {
       setSeatbeltColor('rgba(200, 0, 0, 0.7)')
     }
@@ -85,7 +82,7 @@ const Speedo: React.FC = () => {
                   <img
                     src={seatbeltIcon}
                     alt="seatbeltIcon"
-                    style={{ margin: '5px', width: '30px', fill: seatbeltColor, backgroundColor: seatbeltColor, borderRadius: '7px' }}
+                    style={{ margin: '5px', marginTop: '7px', width: '30px', fill: seatbeltColor, backgroundColor: seatbeltColor, borderRadius: '7px' }}
                   />
                 </div>
 
