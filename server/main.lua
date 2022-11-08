@@ -51,44 +51,19 @@ RegisterNetEvent('dolu_hud:updateStatus', function(status)
 	end
 end)
 
-lib.addCommand('group.admin', 'heal', function(source, args)
-	if source < 1 and not args.target then return end
-	local player = Ox.GetPlayer(args.target)
-	if player then
-		local status = {
-			hunger = Config.status.hunger and 100 or nil,
-			thirst = Config.status.thirst and 100 or nil,
-			stress = Config.status.stress and 0 or nil,
-			drunk = Config.status.drunk and 0 or nil
-		}
+-- Save all players status every X amount of time
+CreateThread(function()
+    while true do
+		Wait(Config.serverStatusInterval)
 
-		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
-			health = 200,
-			armour = player.get('armour'),
-			status = status
-		})
+        local players = Ox.GetPlayers()
+        for i = 1, #players do
+            local player = players[i]
+            local status = lib.callback.await('dolu_hud:getStatus', player.source)
+            SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
+			utils.debug(2, ("Saved status for player %s"):format(player.source), json.encode(status, {indent=true}))
+		end
 
-		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
-		utils.debug(1, "Player " .. player.source .. " healed!")
-	end
-end, {'target:number'})
-
--- Dev
-lib.addCommand('group.admin', 'demo', function(source, args)
-	if source < 1 and not args.target then return end
-	local player = Ox.GetPlayer(args.target)
-	if player then
-		local status = {
-			hunger = math.random(0, 100),
-			thirst = math.random(0, 100),
-			stress = math.random(0, 100),
-			drunk = math.random(0, 100),
-		}
-		TriggerClientEvent('dolu_hud:healPlayer', player.source, {
-			health = math.random(150, 200),
-			armour = math.random(0, 100),
-			status = status
-		})
-		SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
-	end
-end, {'target:number'})
+		utils.debug(1, ("Saved status for %s players"):format(#players))
+    end
+end)

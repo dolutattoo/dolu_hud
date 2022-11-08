@@ -52,19 +52,12 @@ CreateThread(function()
 					playerStatus[name] = utils.round(playerStatus[name], 2)
 				end
 			end
-
 			utils.debug(2, 'Updated status ' .. json.encode(playerStatus, {indent=true}))
 		end
 	end
 end)
 
--- Save player status in database
-CreateThread(function()
-	while true do
-		if PlayerIsLoaded and playerStatus then
-			TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
-			utils.debug(1, 'Saving status in database')
-		end
-		Wait(Config.serverStatusInterval)
-	end
+-- Get status server side
+lib.callback.register('dolu_hud:getStatus', function()
+  return playerStatus
 end)
