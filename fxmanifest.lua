@@ -32,7 +32,9 @@ client_scripts {
 	'client/minimap.lua',
 	'client/status.lua',
 	'client/oxygen.lua',
-	'client/seatbelt.lua'
+	'client/death.lua',
+	'client/seatbelt.lua',
+	'client/speedo.lua'
 }
 
 server_scripts {

@@ -1,4 +1,4 @@
--- Hide Health&Armour HUD
+-- Hide Health & Armour under minimap
 CreateThread(function()
     local minimap = RequestScaleformMovie("minimap")
 

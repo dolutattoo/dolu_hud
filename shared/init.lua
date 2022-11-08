@@ -1,7 +1,38 @@
+local server = IsDuplicityVersion()
 Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
 
-if IsDuplicityVersion() then
-	-- Force disabling pma_voice hud
+if server then
+	-- Retrieve status from database and send it to the player
+	function initStatus(player)
+		local data = json.decode(GetResourceKvpString(('%s:status'):format(player.charid))) or {}
+		local status, created = {}, false
+
+		for name, v in pairs(Config.status) do
+			-- Create status if they doesn't exists
+			if not data[name] then
+				data[name] = v.default
+				created = true
+			end
+
+			status[name] = data[name]
+		end
+
+		-- If any status just got created, update kvp
+		if created then
+			SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
+		end
+
+		local data = {
+			health = player.get('health'),
+			armour = player.get('armour'),
+			status = status
+		}
+
+		TriggerClientEvent('dolu_hud:init', player.source, data)
+		utils.debug(1, ("Loaded status for player %s"):format(player.source), json.encode(data, {indent=true}))
+	end
+
+	-- Hide pma_voice hud
 	SetConvarReplicated('voice_enableUi', 'false')
 else
 	playerStatus = {}
@@ -18,6 +49,7 @@ else
 
 		PlayerIsLoaded = true
 		SendNUIMessage({ action = 'init', data = data })
+		utils.debug(1, "Loaded status", json.encode(data, {indent=true}))
 	end)
 
 	RegisterNetEvent('ox:playerLogout', function()
@@ -33,15 +65,22 @@ else
 		SendNUIMessage({ action = 'toggleVisibility', data = true })
 		cb(1)
 	end)
-
-	-- Death handler
-	AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
-		PlayerIsDead = value
-		if not nuiReady or not PlayerIsLoaded then return end
-		if PlayerIsDead then
-			SendNUIMessage({ action = 'toggleVisibility', data = false })
-		else
-			SendNUIMessage({ action = 'toggleVisibility', data = true })
-		end
-	end)
 end
+
+-- Support resource restart
+AddEventHandler('onResourceStart', function(resourceName)
+	if resourceName ~= cache.resource then return end
+
+	if server then
+		SetTimeout(200, function()
+			local players = Ox.GetPlayers()
+			for i = 1, #players do
+				initStatus(players[i])
+			end
+		end)
+	else
+		if cache.ped then
+			PlayerIsLoaded = true
+		end
+	end
+end)
