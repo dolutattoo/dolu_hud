@@ -2,18 +2,16 @@ local server = IsDuplicityVersion()
 Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
 
 if server then
-	-- Retrieve status from database and send it to the player
+	-- Get status from server and send it to client
 	function initStatus(player)
 		local data = json.decode(GetResourceKvpString(('%s:status'):format(player.charid))) or {}
 		local status, created = {}, false
 
 		for name, v in pairs(Config.status) do
-			-- Create status if they doesn't exists
 			if not data[name] then
-				data[name] = v.default
+				data[name] = v.default -- Create status if they doesn't exists
 				created = true
 			end
-
 			status[name] = data[name]
 		end
 
@@ -32,8 +30,7 @@ if server then
 		utils.debug(1, ("Loaded status for player %s"):format(player.source), json.encode(data, {indent=true}))
 	end
 
-	-- Hide pma_voice hud
-	SetConvarReplicated('voice_enableUi', 'false')
+	SetConvarReplicated('voice_enableUi', 'false') -- Hide pma_voice hud
 else
 	playerStatus = {}
 
