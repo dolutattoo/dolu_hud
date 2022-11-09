@@ -9,11 +9,7 @@ const Speedo: React.FC = () => {
   // Visibility
   const [visible, setVisible] = useState<boolean>(false)
   useNuiEvent('toggleSpeedo', (state: boolean) => setVisible(state))
-
-  // If main hud is toggled off, hide speedo too.
-  useNuiEvent('toggleVisibility', (state: boolean) => {
-    if (state === false) setVisible(false)
-  })
+  useNuiEvent('toggleVisibility', (state: boolean) =>  setVisible(state)) // Used when hot reloading resource
 
   // Seatbelt
   const [seatbelt, setSeatbelt] = useState<boolean>(false)
