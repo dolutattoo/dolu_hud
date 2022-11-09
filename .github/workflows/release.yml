@@ -71,8 +71,8 @@ jobs:
         run: |
           mkdir -p ./temp/dolu_hud
           mkdir -p ./temp/dolu_hud/web/
-          cp ./{README.md,fxmanifest.lua,config.json} ./temp/dolu_hud
-          cp -r ./{client,server,shared} ./temp/dolu_hud
+          cp ./{LICENSE,README.md,fxmanifest.lua,config.json} ./temp/dolu_hud
+          cp -r ./{client,shared,server} ./temp/dolu_hud
           cp -r ./web/build ./temp/dolu_hud/web/
           cd ./temp && zip -r ../dolu_hud.zip ./dolu_hud
 
@@ -82,7 +82,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           title: ${{ env.RELEASE_VERSION }}
-          prerelease: true
+          prerelease: false
           files: dolu_hud.zip
 
         env:
