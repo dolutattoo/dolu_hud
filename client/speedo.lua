@@ -4,7 +4,7 @@ CreateThread(function()
 		if PlayerIsLoaded and cache.seat and not PlayerIsDead then
 			if DoesEntityExist(cache.vehicle) then
 				local currentSpeed = GetEntitySpeed(cache.vehicle)*(Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
-				if oldSpeed ~= currentSpeed then
+				if lastSpeed ~= currentSpeed then
 					lastSpeed = currentSpeed
 					SendNUIMessage({
 						action = 'setSpeedo',
