@@ -1,5 +1,24 @@
 CreateThread(function()
 	local lastSpeed = 0
+
+	-- Support resource restart
+	repeat Wait(0) until nuiReady
+	if PlayerIsLoaded and cache.seat and not PlayerIsDead then
+		if DoesEntityExist(cache.vehicle) then
+			SendNUIMessage({ action = 'toggleSpeedo', data = true })
+			lastSpeed = 0
+			SendNUIMessage({
+				action = 'setSpeedo',
+				data = {
+					speed = 0,
+					rpm = GetVehicleCurrentRpm(cache.vehicle),
+					-- fuelLevel = GetVehicleFuelLevel(cache.vehicle)
+					fuelLevel = 10
+				}
+			})
+		end
+	end
+
 	while true do
 		if PlayerIsLoaded and cache.seat and not PlayerIsDead then
 			if DoesEntityExist(cache.vehicle) then
@@ -10,7 +29,6 @@ CreateThread(function()
 						action = 'setSpeedo',
 						data = {
 							speed = math.floor(currentSpeed),
-							gear = GetVehicleCurrentGear(cache.vehicle),
 							rpm = GetVehicleCurrentRpm(cache.vehicle),
 							fuelLevel = GetVehicleFuelLevel(cache.vehicle)
 						}

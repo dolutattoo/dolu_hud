@@ -5,30 +5,27 @@ import Config from '../../../config.json'
 import { BiGasPump } from 'react-icons/bi'
 import seatbeltIcon from '../img/seatbelt.svg'
 
+interface Speedo {
+  speed: number
+  rpm: number
+  fuelLevel: number
+}
+
 const Speedo: React.FC = () => {
   // Visibility
   const [visible, setVisible] = useState<boolean>(false)
   useNuiEvent('toggleSpeedo', (state: boolean) => setVisible(state))
-  useNuiEvent('toggleVisibility', (state: boolean) =>  setVisible(state)) // Used when hot reloading resource
 
   // Seatbelt
-  const [seatbelt, setSeatbelt] = useState<boolean>(false)
   const [seatbeltColor, setSeatbeltColor] = useState<string>('rgba(200, 0, 0, 0.7)')
-  useNuiEvent('setSeatbelt', (state: boolean) => {
-    setSeatbelt(state)
-
-    if (state) {
-      setSeatbeltColor('rgba(200, 200, 200, 0.9)')
-    } else {
-      setSeatbeltColor('rgba(200, 0, 0, 0.7)')
-    }
-  })
+  useNuiEvent('setSeatbelt', (state: boolean) =>
+    setSeatbeltColor(state === true ? 'rgba(200, 200, 200, 0.9)' : 'rgba(200, 0, 0, 0.7)')
+  )
 
   // ProgressBars states values
   const [speed, setSpeed] = useState<number>(0)
-  const [gear, setGear] = useState<number>(0)
   const [rpm, setRpm] = useState<number>(0)
-  const [fuelLevel, setFuelLevel] = useState<number>(70)
+  const [fuelLevel, setFuelLevel] = useState<number>(0)
   const [fuelLevelColor, setFuelLevelColor] = useState<string>('red')
 
   const getColor = (value: number, color:string) => {
@@ -36,9 +33,9 @@ const Speedo: React.FC = () => {
   }
 
   // Set values from client script
-  useNuiEvent('setSpeedo', (data: {speed: number, gear:number , rpm: number, fuelLevel: number}) => {
+  useNuiEvent('setSpeedo', (data: Speedo) => {
+    if (!visible) {setVisible(true)}
     setSpeed(data.speed)
-    setGear(data.gear)
     setRpm((data.rpm*100)/1)
     setFuelLevel(data.fuelLevel)
     setFuelLevelColor(getColor(data.fuelLevel, 'gray.4'))
