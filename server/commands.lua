@@ -36,8 +36,5 @@ lib.addCommand('group.admin', 'random', function(source, args)
 			armour = math.random(0, 100),
 			status = status
 		})
-		if args.save then
-			SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
-		end
 	end
-end, {'target:number', 'save:boolean'})
+end, {'target:number'})

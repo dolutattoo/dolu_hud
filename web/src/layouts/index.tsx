@@ -50,11 +50,9 @@ const Hud: React.FC = () => {
   const [healthColor, setHealthColor] = useState<string>('red')
   const [hungerColor, setHungerColor] = useState<string>(Config.status.hunger.color)
   const [thirstColor, setThirstColor] = useState<string>(Config.status.thirst.color)
+  const [stressColor, setStressColor] = useState<string>(Config.status.stress.color)
+  const [drunkColor, setDrunkColor] = useState<string>(Config.status.drunk.color)
   const [oxygenColor, setOxygenColor] = useState<string>(Config.OxygenColor)
-
-  const getColor = (value: number, color:string) => {
-    if (value > 10) { return color } else { return 'red' }
-  }
 
   // Set values from client script
   useNuiEvent('setStatusValue', (data: { statusName: string, value: number }) => {
@@ -62,22 +60,24 @@ const Hud: React.FC = () => {
       setVoiceLevel(data.value*33.3333)
     } else if (data.statusName === 'health') {
       setHealth(data.value)
-      setHealthColor(getColor(data.value, Config.HealthColor))
+      setHealthColor(data.value < 95 ? Config.HealthColor : "red")
     } else if (data.statusName === 'armour') {
       setArmour(data.value)
     } else if (data.statusName === 'hunger') {
       setHunger(data.value)
-      setHungerColor(getColor(data.value, Config.status.hunger.color))
+      setHungerColor(data.value < 95 ? Config.status.hunger.color : "red")
     } else if (data.statusName === 'thirst') {
       setThirst(data.value)
-      setThirstColor(getColor(data.value, Config.status.thirst.color))
+      setThirstColor(data.value < 95 ? Config.status.thirst.color : "red")
     } else if (data.statusName === 'stress') {
       setStress(data.value)
+      setStressColor(data.value < 95 ? Config.status.stress.color : "red")
     } else if (data.statusName === 'drunk') {
       setDrunk(data.value)
+      setDrunkColor(data.value < 95 ? Config.status.drunk.color : "red")
     } else if (data.statusName === 'oxygen') {
       setOxygen(data.value)
-      setOxygenColor(getColor(data.value, Config.OxygenColor))
+      setOxygenColor(data.value > 10 ? Config.OxygenColor : "red")
     } else if (data.statusName === 'radioState') {
       setTalkingRadio(data.value)
     }
@@ -120,7 +120,7 @@ const Hud: React.FC = () => {
           />}
 
           {/* HUNGER */}
-          {(Config.status.hunger.hideOnFull ? hunger < 100 : true) &&
+          {hunger > 0 &&
             <RingProgress sections={[{ value: hunger, color: hungerColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
@@ -133,7 +133,7 @@ const Hud: React.FC = () => {
           }
 
           {/* THIRST */}
-          {(Config.status.thirst.hideOnFull ? thirst < 100 : true) &&
+          {thirst > 0 &&
             <RingProgress sections={[{ value: thirst, color: thirstColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
@@ -146,11 +146,11 @@ const Hud: React.FC = () => {
           }
 
           {/* STRESS */}
-          {(Config.status.stress.hideOnFull ? stress > 0 : true) &&
-            <RingProgress sections={[{ value: stress, color: 'orange' }]} thickness={6} size={55} roundCaps
+          {stress > 0 &&
+            <RingProgress sections={[{ value: stress, color: stressColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
-                  <ThemeIcon color='orange' variant='light' radius='xl' size={44}>
+                  <ThemeIcon color={stressColor} variant='light' radius='xl' size={44}>
                     <BiBrain size={23} />
                   </ThemeIcon>
                 </Center>
@@ -159,11 +159,11 @@ const Hud: React.FC = () => {
           }
 
           {/* DRUNK */}
-          {(Config.status.drunk.hideOnFull ? drunk > 0 : true) &&
-            <RingProgress sections={[{ value: drunk, color: 'grape' }]} thickness={6} size={55} roundCaps
+          {drunk > 0 &&
+            <RingProgress sections={[{ value: drunk, color: drunkColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
-                  <ThemeIcon color='grape' variant='light' radius='xl' size={44}>
+                  <ThemeIcon color={drunkColor} variant='light' radius='xl' size={44}>
                     <TbGlass size={23} />
                   </ThemeIcon>
                 </Center>

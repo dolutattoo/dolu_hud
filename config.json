@@ -5,6 +5,7 @@
   "statusClientInterval": 2500,
   "serverStatusInterval": 60000,
   "speedoMetrics": "kmh",
+  "setMaxHealth": true,
 
   "VoiceColor": "gray.2",
   "HealthColor": "teal",
@@ -15,29 +16,21 @@
   "status": {
     "hunger": {
       "default": 100,
-      "onTick": -0.1,
-      "hideOnFull": false,
       "color": "yellow"
     },
 
     "thirst": {
       "default": 100,
-      "onTick": -0.1,
-      "hideOnFull": false,
       "color": "blue"
     },
 
     "stress": {
       "default": 0,
-      "onTick": -0.1,
-      "hideOnFull": true,
       "color": "orange"
     },
 
     "drunk": {
       "default": 0,
-      "onTick": -0.1,
-      "hideOnFull": true,
       "color": "grape"
     }
   }

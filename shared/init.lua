@@ -2,59 +2,46 @@ local server = IsDuplicityVersion()
 Config = json.decode(LoadResourceFile(cache.resource, 'config.json'))
 
 if server then
-	-- Get status from server and send it to client
-	function initStatus(player)
-		local data = json.decode(GetResourceKvpString(('%s:status'):format(player.charid))) or {}
-		local status, created = {}, false
+	SetConvarReplicated('voice_enableUi', 'false') -- Hide pma_voice hud
+else
+	PlayerIsLoaded = false
+	statuses = {}
 
-		for name, v in pairs(Config.status) do
-			if not data[name] then
-				data[name] = v.default -- Create status if they doesn't exists
-				created = true
-			end
-			status[name] = data[name]
-		end
+	local function init()
+		local playerPed = cache.ped
 
-		-- If any status just got created, update kvp
-		if created then
-			SetResourceKvp(('%s:status'):format(player.charid), json.encode(status))
+		-- Set max ped entity to 200 (NPCs and mp_f_freemode_01 has lower values)
+		if Config.setMaxHealth then
+			SetEntityMaxHealth(playerPed, 200)
 		end
 
 		local data = {
-			health = player.get('health'),
-			armour = player.get('armour'),
-			status = status
+			health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100),
+			armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId)),
 		}
 
-		TriggerClientEvent('dolu_hud:init', player.source, data)
-		utils.debug(1, ("Loaded status for player %s"):format(player.source), json.encode(data, {indent=true}))
-	end
-
-	SetConvarReplicated('voice_enableUi', 'false') -- Hide pma_voice hud
-else
-	playerStatus = {}
-
-	RegisterNetEvent('dolu_hud:init', function(data)
-		SetEntityMaxHealth(cache.ped, 200)
-
-		for k in pairs(Config.status) do
-			playerStatus[k] = data.status[k]
-		end
+		-- Wait for ox_core to provide statuses
+		while not statuses.hunger do Wait(0) end
+		data.status = statuses
 
 		-- Get voice level from statebag (pma_voice)
 		data.voiceLevel = LocalPlayer.state.proximity.index or 2
 
-		PlayerIsLoaded = true
-		SendNUIMessage({ action = 'init', data = data })
+		SendNUIMessage({
+			action = 'init',
+			data = data
+		})
+
 		utils.debug(1, "Loaded status", json.encode(data, {indent=true}))
-	end)
+	end
+
+	AddEventHandler('ox:playerLoaded', init)
 
 	RegisterNetEvent('ox:playerLogout', function()
 		SendNUIMessage({ action = 'toggleVisibility', data = false })
-		TriggerServerEvent('dolu_hud:updateStatus', playerStatus)
-		playerStatus = {}
 		PlayerIsLoaded = false
 		nuiReady = false
+		statuses = nil
 	end)
 
 	RegisterNUICallback('nuiReady', function(_, cb)
@@ -62,22 +49,15 @@ else
 		SendNUIMessage({ action = 'toggleVisibility', data = true })
 		cb(1)
 	end)
-end
 
--- Support resource restart
-AddEventHandler('onResourceStart', function(resourceName)
-	if resourceName ~= cache.resource then return end
+	-- Support resource restart
+	AddEventHandler('onResourceStart', function(resourceName)
+		if resourceName ~= cache.resource then return end
 
-	if server then
-		SetTimeout(200, function()
-			local players = Ox.GetPlayers()
-			for i = 1, #players do
-				initStatus(players[i])
-			end
-		end)
-	else
 		if cache.ped then
 			PlayerIsLoaded = true
+			init()
 		end
-	end
-end)
+	end)
+end
+
