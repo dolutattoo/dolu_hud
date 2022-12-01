@@ -16,6 +16,7 @@ The nui was made using React and Mantine UI.
 - Status add/remove system depending on config
 - Saving status as character metadata in database
 - '/heal' command
+- Ignore statuses who are not in ox_statuses table
 - Hud elements:
 	- `Health`<br>
 		Simply show the current health
@@ -24,20 +25,16 @@ The nui was made using React and Mantine UI.
 		Show the current armour, just use the armour item!
 
 	- `Hunger`<br>
-		Start from 100 and decrease slowly to 0.<br>
-		When 0, decrease health slowly. (todo)
+		Start from 0 and increase slowly to 100.<br>
 
 	- `Thirst`<br>
-		Start from 100 and decrease slowly to 0.<br>
-		When 0, decrease health slowly. (todo)
+		Start from 0 and increase slowly to 100.<br>
 
 	- `Stress`<br>
 		Start from 0 and increase slowly to 100.<br>
-		When 100, decrease health slowly. (todo)
 
 	- `Drunk`<br>
-		Start from 0 and increase slowly to 100.<br>
-		When 100, decrease health slowly. (todo)
+		You need to add it to ox_statuses table in your database to see it.<br>
 
 	- `Oxygen` (underwater)<br>
 		Same comportment as vanilla, which is fine
