@@ -20,16 +20,19 @@ if Config.hideRadarOnFoot then
 	CreateThread(function()
 		local isRadarDisplayed, vehicle = false, false
 		DisplayRadar(isRadarDisplayed)
+
 		while true do
 			if PlayerIsLoaded and cache.vehicle ~= vehicle then
 				isRadarDisplayed = not isRadarDisplayed
 				vehicle = cache.vehicle
 				DisplayRadar(isRadarDisplayed)
+
 				SendNUIMessage({
 					action = 'toggleSpeedo',
 					data = vehicle and true or false
 				})
 			end
+
 			Wait(200)
 		end
 	end)

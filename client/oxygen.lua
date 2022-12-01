@@ -7,9 +7,11 @@ CreateThread(function()
 		if nuiReady then
 			if IsPedSwimmingUnderWater(PlayerPedId()) then
 				local oxygenState = GetPlayerUnderwaterTimeRemaining(PlayerId())
+
 				if not oxygenMax then
 					oxygenMax = oxygenState
 				end
+
 				SendNUIMessage({
 					action = 'setStatusValue',
 					data = {
@@ -17,6 +19,7 @@ CreateThread(function()
 						value = utils.percent(oxygenState, oxygenMax)
 					}
 				})
+
 				isUnderwater = true
 				wait = 10
 
@@ -28,6 +31,7 @@ CreateThread(function()
 						value = 100
 					}
 				})
+
 				isUnderwater = false
 				oxygenMax = nil
 			end

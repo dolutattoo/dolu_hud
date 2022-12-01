@@ -2,7 +2,8 @@ CreateThread(function()
 	local lastSpeed = 0
 
 	-- Support resource restart
-	repeat Wait(0) until nuiReady
+	repeat Wait(10) until nuiReady
+
 	if PlayerIsLoaded and cache.seat and not PlayerIsDead then
 		if DoesEntityExist(cache.vehicle) then
 			SendNUIMessage({ action = 'toggleSpeedo', data = true })

@@ -2,6 +2,7 @@
 -- Get Health and Armour and send them to NUI when they change
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour
+
 	while true do
 		if nuiReady and PlayerIsLoaded then
 			local playerPed = cache.ped
@@ -34,19 +35,31 @@ CreateThread(function()
 	end
 end)
 
-RegisterNetEvent('dolu_hud:healPlayer', function(data)
-	if PlayerIsLoaded and IsPedDeadOrDying(cache.ped) then return end
+-- Death handler
+AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
+	if not nuiReady or not PlayerIsLoaded then return end
 
-	SetEntityHealth(cache.ped, data.health)
+	if value then
+		SendNUIMessage({ action = 'toggleVisibility', data = false })
+	else
+		if PlayerIsDead then
+			TriggerEvent('dolu_hud:init', {
+				health = 200,
+				armour = 0,
+				status = {
+					hunger = Config.status.hunger.default * 0.75,
+					thirst = Config.status.thirst.default * 0.75,
+					stress = Config.status.stress.default,
+					drunk = Config.status.drunk.default
+				}
+			})
+		end
 
-	if data.armour then
-		SetPedArmour(cache.ped, data.armour)
+		SendNUIMessage({
+			action = 'toggleVisibility',
+			data = true
+		})
 	end
 
-	-- Sending all data to nui using the ini event
-	TriggerEvent('dolu_hud:init', {
-		health = data.health,
-		armour = data.armour,
-		status = data.status
-	})
+	PlayerIsDead = value
 end)
