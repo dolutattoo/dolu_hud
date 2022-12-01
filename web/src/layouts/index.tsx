@@ -26,12 +26,12 @@ const Hud: React.FC = () => {
   // ProgressBars states values
   const [isTalkingRadio, setTalkingRadio] = useState<number>(0)
   const [voiceLevel, setVoiceLevel] = useState<number>(0)
-  const [health, setHealth] = useState<number>(0)
+  const [health, setHealth] = useState<number>(100)
   const [armour, setArmour] = useState<number>(0)
-  const [hunger, setHunger] = useState<number>(Config.status.hunger.default)
-  const [thirst, setThirst] = useState<number>(Config.status.thirst.default)
-  const [stress, setStress] = useState<number>(Config.status.stress.default)
-  const [drunk, setDrunk] = useState<number>(Config.status.drunk.default)
+  const [hunger, setHunger] = useState<number>(0)
+  const [thirst, setThirst] = useState<number>(0)
+  const [stress, setStress] = useState<number>(0)
+  const [drunk, setDrunk] = useState<number>(0)
   const [oxygen, setOxygen] = useState<number>(100)
 
   // Init values from client script
@@ -48,10 +48,11 @@ const Hud: React.FC = () => {
 
   // Colors states
   const [healthColor, setHealthColor] = useState<string>('red')
-  const [hungerColor, setHungerColor] = useState<string>(Config.status.hunger.color)
-  const [thirstColor, setThirstColor] = useState<string>(Config.status.thirst.color)
-  const [stressColor, setStressColor] = useState<string>(Config.status.stress.color)
-  const [drunkColor, setDrunkColor] = useState<string>(Config.status.drunk.color)
+  const [armourColor, setArmourColor] = useState<string>(Config.ArmourColor)
+  const [hungerColor, setHungerColor] = useState<string>(Config.statusesColors.hunger)
+  const [thirstColor, setThirstColor] = useState<string>(Config.statusesColors.thirst)
+  const [stressColor, setStressColor] = useState<string>(Config.statusesColors.stress)
+  const [drunkColor, setDrunkColor] = useState<string>(Config.statusesColors.drunk)
   const [oxygenColor, setOxygenColor] = useState<string>(Config.OxygenColor)
 
   // Set values from client script
@@ -60,24 +61,25 @@ const Hud: React.FC = () => {
       setVoiceLevel(data.value*33.3333)
     } else if (data.statusName === 'health') {
       setHealth(data.value)
-      setHealthColor(data.value < 95 ? Config.HealthColor : "red")
+      setHealthColor(data.value < 95 ? healthColor : 'red')
     } else if (data.statusName === 'armour') {
       setArmour(data.value)
+      setArmourColor(data.value < 95 ? armourColor : 'red')
     } else if (data.statusName === 'hunger') {
       setHunger(data.value)
-      setHungerColor(data.value < 95 ? Config.status.hunger.color : "red")
+      setHungerColor(data.value < 95 ? hungerColor : 'red')
     } else if (data.statusName === 'thirst') {
       setThirst(data.value)
-      setThirstColor(data.value < 95 ? Config.status.thirst.color : "red")
+      setThirstColor(data.value < 95 ? thirstColor : 'red')
     } else if (data.statusName === 'stress') {
       setStress(data.value)
-      setStressColor(data.value < 95 ? Config.status.stress.color : "red")
+      setStressColor(data.value < 95 ? stressColor : 'red')
     } else if (data.statusName === 'drunk') {
       setDrunk(data.value)
-      setDrunkColor(data.value < 95 ? Config.status.drunk.color : "red")
+      setDrunkColor(data.value < 95 ? drunkColor : 'red')
     } else if (data.statusName === 'oxygen') {
       setOxygen(data.value)
-      setOxygenColor(data.value > 10 ? Config.OxygenColor : "red")
+      setOxygenColor(data.value > 10 ? oxygenColor : 'red')
     } else if (data.statusName === 'radioState') {
       setTalkingRadio(data.value)
     }
@@ -120,7 +122,7 @@ const Hud: React.FC = () => {
           />}
 
           {/* HUNGER */}
-          {hunger > 0 &&
+          {hunger > 5 &&
             <RingProgress sections={[{ value: hunger, color: hungerColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
@@ -133,7 +135,7 @@ const Hud: React.FC = () => {
           }
 
           {/* THIRST */}
-          {thirst > 0 &&
+          {thirst > 5 &&
             <RingProgress sections={[{ value: thirst, color: thirstColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
@@ -146,7 +148,7 @@ const Hud: React.FC = () => {
           }
 
           {/* STRESS */}
-          {stress > 0 &&
+          {stress > 5 &&
             <RingProgress sections={[{ value: stress, color: stressColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>
@@ -159,7 +161,7 @@ const Hud: React.FC = () => {
           }
 
           {/* DRUNK */}
-          {drunk > 0 &&
+          {drunk > 5 &&
             <RingProgress sections={[{ value: drunk, color: drunkColor }]} thickness={6} size={55} roundCaps
               label={
                 <Center>

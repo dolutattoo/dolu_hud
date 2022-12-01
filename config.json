@@ -13,25 +13,10 @@
   "OxygenColor": "cyan",
   "speedColor": "teal",
 
-  "status": {
-    "hunger": {
-      "default": 100,
-      "color": "yellow"
-    },
-
-    "thirst": {
-      "default": 100,
-      "color": "blue"
-    },
-
-    "stress": {
-      "default": 0,
-      "color": "orange"
-    },
-
-    "drunk": {
-      "default": 0,
-      "color": "grape"
-    }
+  "statusesColors": {
+    "hunger": "yellow",
+    "thirst": "blue",
+    "stress": "orange",
+    "drunk": "grape"
   }
 }
