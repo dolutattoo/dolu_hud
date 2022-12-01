@@ -37,12 +37,6 @@ client_scripts {
 	'client/speedo.lua'
 }
 
-server_scripts {
-	'@ox_core/imports/server.lua',
-	'server/main.lua',
-	'server/commands.lua'
-}
-
 ui_page 'web/build/index.html'
 
 files {
