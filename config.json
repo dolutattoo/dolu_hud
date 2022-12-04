@@ -12,7 +12,7 @@
     "oxygen": "cyan",
     "speedo": "teal",
     "hunger": "yellow",
-    "thirst": "cyan.3",
+    "thirst": "cyan.5",
     "stress": "orange",
     "drunk": "grape"
   }

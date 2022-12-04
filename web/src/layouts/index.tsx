@@ -5,7 +5,7 @@ import { fetchNui } from '../utils/fetchNui'
 import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
 import { TbDroplet, TbGlass, TbLungs, TbMeat, TbRadio } from 'react-icons/tb'
 import { IoSkullOutline } from 'react-icons/io5'
-import Config from '../Config.json'
+import { useConfig } from '../providers/ConfigProvider'
 
 interface HudProps {
 	toggle?: boolean
@@ -23,6 +23,12 @@ interface HudProps {
 }
 
 const Hud: React.FC = () => {
+  // Config
+  const { config } = useConfig()
+
+  console.log(config.colors.thirst)
+
+
 	// Visibility
 	const [visible, setVisible] = useState<boolean>(false)
 	useNuiEvent('toggleVisibility', (value: boolean) => setVisible(value))
@@ -39,13 +45,13 @@ const Hud: React.FC = () => {
 	const [oxygen, setOxygen] = useState<number>(100)
 
 	// Colors states
-	const [healthColor, setHealthColor] = useState<string>(Config.colors.health)
-	const [armourColor, setArmourColor] = useState<string>(Config.colors.armour)
-	const [hungerColor, setHungerColor] = useState<string>(Config.colors.hunger)
-	const [thirstColor, setThirstColor] = useState<string>(Config.colors.thirst)
-	const [stressColor, setStressColor] = useState<string>(Config.colors.stress)
-	const [drunkColor, setDrunkColor] = useState<string>(Config.colors.drunk)
-	const [oxygenColor, setOxygenColor] = useState<string>(Config.colors.oxygen)
+	const [healthColor, setHealthColor] = useState<string>(config.colors.health)
+	const [armourColor, setArmourColor] = useState<string>(config.colors.armour)
+	const [hungerColor, setHungerColor] = useState<string>(config.colors.hunger)
+	const [thirstColor, setThirstColor] = useState<string>(config.colors.thirst)
+	const [stressColor, setStressColor] = useState<string>(config.colors.stress)
+	const [drunkColor, setDrunkColor] = useState<string>(config.colors.drunk)
+	const [oxygenColor, setOxygenColor] = useState<string>(config.colors.oxygen)
 
 	// Set values from client script
 	useNuiEvent('setStatuses', (data: HudProps) => {
@@ -61,33 +67,33 @@ const Hud: React.FC = () => {
 		}
 		if (data.health !== undefined) {
 			setHealth(data.health)
-			if (data.health !== health) setHealthColor(data.health > 10 ? Config.colors.health : 'red')
+			if (data.health !== health) setHealthColor(data.health > 10 ? config.colors.health : 'red')
 		}
 		if (data.armour !== undefined) {
 			setArmour(data.armour)
-			if (data.armour !== armour) setArmourColor(data.armour < 95 ? Config.colors.armour : 'red')
+			if (data.armour !== armour) setArmourColor(data.armour < 95 ? config.colors.armour : 'red')
 		}
 		if (data.oxygen !== undefined) {
 			setOxygen(data.oxygen)
-			if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? Config.colors.oxygen : 'red')
+			if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? config.colors.oxygen : 'red')
 		}
 		if (data.statuses !== undefined) {
 			const status = data.statuses
 			if (status.hunger !== undefined) {
 				setHunger(status.hunger)
-				if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? Config.colors.hunger : 'red')
+				if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? config.colors.hunger : 'red')
 			}
 			if (status.thirst !== undefined) {
 				setThirst(status.thirst)
-				if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? Config.colors.thirst : 'red')
+				if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? config.colors.thirst : 'red')
 			}
 			if (status.stress !== undefined) {
 				setStress(status.stress)
-				if (status.stress !== stress) setStressColor(status.stress < 95 ? Config.colors.stress : 'red')
+				if (status.stress !== stress) setStressColor(status.stress < 95 ? config.colors.stress : 'red')
 			}
 			if (status.drunk !== undefined) {
 				setDrunk(status.drunk)
-				if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? Config.colors.drunk : 'red')
+				if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? config.colors.drunk : 'red')
 			}
 		}
 	})
@@ -96,10 +102,10 @@ const Hud: React.FC = () => {
 		<>
 		{visible && <Group spacing={0} style={{ position: 'absolute', bottom: '0' }}>
 		{/* VOICE */}
-		{voiceLevel > 0 && <RingProgress sections={[{ value: voiceLevel, color: Config.colors.voice }]} thickness={6} size={55} roundCaps
+		{voiceLevel > 0 && <RingProgress sections={[{ value: voiceLevel, color: config.colors.voice }]} thickness={6} size={55} roundCaps
 		label={
 			<Center>
-			<ThemeIcon color={Config.colors.voice} variant='light' radius='xl' size={44}>
+			<ThemeIcon color={config.colors.voice} variant='light' radius='xl' size={44}>
 			{isTalkingRadio > 0 ? <TbRadio size={23} /> : <BiMicrophone size={23} /> }
 			</ThemeIcon>
 			</Center>
