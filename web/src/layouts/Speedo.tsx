@@ -63,70 +63,68 @@ const Speedo: React.FC = () => {
 
 	return (
 		<>
-		{visible &&
-			<>
-			<Center>
-			<Box
-			style={{ position: 'fixed', bottom: '7vh', width: '200px', height: '80px', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '0.7vh', justifyContent: 'center' }}
-			>
-			{/* RPM */}
-			<Progress
-			value={rpm}
-			color={getRpmColor(rpm)}
-			style={{ margin: '7px' }}
-			/>
+		{visible && <>
+      <Center>
+        <Box
+          style={{ position: 'fixed', bottom: '7vh', width: '200px', height: '80px', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '0.7vh', justifyContent: 'center' }}
+        >
+          {/* RPM */}
+          <Progress
+            value={rpm}
+            color={getRpmColor(rpm)}
+            style={{ margin: '7px' }}
+          />
 
-			{/* SEATBELT */}
-			<div style={{ position: 'relative', margin: '5px', float: 'left' }}>
-			<img
-			src={seatbeltIcon}
-			alt="seatbeltIcon"
-			style={{ margin: '5px', marginTop: '7px', width: '30px', fill: seatbeltColor, backgroundColor: seatbeltColor, borderRadius: '7px' }}
-			/>
-			</div>
+          {/* SEATBELT */}
+          <div style={{ position: 'relative', margin: '5px', float: 'left' }}>
+            <img
+              src={seatbeltIcon}
+              alt="seatbeltIcon"
+              style={{ margin: '5px', marginTop: '7px', width: '30px', fill: seatbeltColor, backgroundColor: seatbeltColor, borderRadius: '7px' }}
+            />
+          </div>
 
-			{/* SPEED */}
-			<div style={{ position: 'absolute', marginLeft: '80px' }}>
-			<Center>
-			<Text
-			color='gray.4'
-			size={20}
-			weight={800}
-			style={{ marginTop: '-2px' }}
-			>
-			{speed}
-			</Text>
-			</Center>
-			<Center>
-			<Text
-			color='gray.4'
-			size='sm'
-			weight={800}
-			style={{ marginBottom: '-10px' }}
-			>
-			{ config.speedoMetrics === 'kmh' ? 'Km/h' : 'Mph' }
-			</Text>
-			</Center>
-			</div>
+          {/* SPEED */}
+          <div style={{ position: 'absolute', marginLeft: '80px' }}>
+            <Center>
+              <Text
+                color='gray.4'
+                size={20}
+                weight={800}
+                style={{ marginTop: '-2px' }}
+              >
+                {speed}
+              </Text>
+            </Center>
+            <Center>
+              <Text
+                color='gray.4'
+                size='sm'
+                weight={800}
+                style={{ marginBottom: '-10px' }}
+              >
+                { config.speedoMetrics === 'kmh' ? 'Km/h' : 'Mph' }
+              </Text>
+            </Center>
+          </div>
 
-			{/* FUEL */}
-			<div style={{ position: 'relative', margin: '5px', float: 'right' }}>
-			{fuelLevel !== undefined && <RingProgress sections={[{ value: fuelLevel, color: fuelLevelColor }]} thickness={6/1.2} size={55/1.2} roundCaps
-			label={
-				<Center>
-				<ThemeIcon color={fuelLevelColor} variant='light' radius='xl' size={44/1.2}>
-				<BiGasPump size={23} />
-				</ThemeIcon>
-				</Center>
-			}
-			/>}
-			</div>
-			</Box>
-			</Center>
-			</>
-		}
-		</>
-		)
-	}
+          {/* FUEL */}
+          <div style={{ position: 'relative', margin: '5px', float: 'right' }}>
+            {fuelLevel !== undefined && <RingProgress sections={[{ value: fuelLevel, color: fuelLevelColor }]} thickness={6/1.2} size={55/1.2} roundCaps
+              label={
+                <Center>
+                <ThemeIcon color={fuelLevelColor} variant='light' radius='xl' size={44/1.2}>
+                <BiGasPump size={23} />
+                </ThemeIcon>
+                </Center>
+              }
+            />}
+          </div>
+        </Box>
+      </Center>
+    </>}
+  </>
+  )
+}
 
-	export default Speedo
+export default Speedo
