@@ -5,10 +5,10 @@ import { fetchNui } from '../utils/fetchNui'
 import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
 import { TbDroplet, TbGlass, TbLungs, TbMeat, TbRadio } from 'react-icons/tb'
 import { IoSkullOutline } from 'react-icons/io5'
-import Config from '../../../config.json'
+import Config from '../Config.json'
 
 interface HudProps {
-  toggle?: boolean
+	toggle?: boolean
 	talking?: number
 	voice?: number
 	health?: number
@@ -49,10 +49,10 @@ const Hud: React.FC = () => {
 
 	// Set values from client script
 	useNuiEvent('setStatuses', (data: HudProps) => {
-    if (data.toggle !== undefined) {
-      setVisible(data.toggle)
-      if (data.toggle === true) fetchNui('nuiReady')
-    }
+		if (data.toggle !== undefined) {
+			setVisible(data.toggle)
+			if (data.toggle === true) fetchNui('nuiReady')
+		}
 		if (data.talking !== undefined) {
 			setTalkingRadio(data.talking)
 		}

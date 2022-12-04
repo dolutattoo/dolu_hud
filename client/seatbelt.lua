@@ -26,4 +26,5 @@ local function toggleSeatbelt()
 	end
 end
 
-RegisterCommand('seatbelt', toggleSeatbelt)
+RegisterCommand('dolu_hud:seatbelt', toggleSeatbelt)
+RegisterKeyMapping('dolu_hud:seatbelt', 'Toggle seatbelt', 'keyboard', Config.seatbeltKey)
