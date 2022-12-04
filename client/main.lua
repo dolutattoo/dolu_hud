@@ -20,15 +20,17 @@ CreateThread(function()
 				changed = true
 			end
 
-			if changed then
-				SendNUIMessage({
-					action = 'setStatuses',
-					data = {
-						health = currentHealth,
-						armour = currentArmour
-					}
-				})
+			if not changed then
+				Wait(1000)
 			end
+
+			SendNUIMessage({
+				action = 'setStatuses',
+				data = {
+					health = currentHealth,
+					armour = currentArmour
+				}
+			})
 		end
 		Wait(50)
 	end

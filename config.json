@@ -6,8 +6,8 @@
   "seatbeltKey": "K",
   "setMaxHealth": true,
   "colors": {
-    "health": "orange.2",
-    "armour": "blue",
+    "health": "teal.4",
+    "armour": "blue.5",
     "voice": "gray.2",
     "oxygen": "cyan",
     "speedo": "teal",

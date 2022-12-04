@@ -37,13 +37,13 @@ const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =
     "seatbeltKey": "K",
     "setMaxHealth": true,
     "colors": {
-      "health": "orange.2",
-      "armour": "blue",
+      "health": "teal.4",
+      "armour": "blue.5",
       "voice": "gray.2",
       "oxygen": "cyan",
       "speedo": "teal",
       "hunger": "yellow",
-      "thirst": "cyan.3",
+      "thirst": "cyan.5",
       "stress": "orange",
       "drunk": "grape"
     }
