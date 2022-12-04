@@ -5,6 +5,7 @@ if server then
 	SetConvarReplicated('voice_enableUi', 'false') -- Hide pma_voice hud
 else
 	PlayerIsLoaded = false
+	PlayerIsDead = false
 	statuses = {}
 
 	local function init()
@@ -15,24 +16,28 @@ else
 			SetEntityMaxHealth(playerPed, 200)
 		end
 
-		local data = {
-			health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100),
-			armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId)),
-		}
+		local data = {}
+
+		-- Make Hud visible
+		data.toggle = true
+
+		-- Health & Armour
+		data.health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
+		data.armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId))
 
 		-- Wait for ox_core to provide statuses
-		while not statuses.hunger do Wait(0) end
-		data.status = statuses
+		while not statuses?.hunger do Wait(0) end
+		data.statuses = statuses
 
 		-- Get voice level from statebag (pma_voice)
-		data.voiceLevel = LocalPlayer.state.proximity.index or 2
+		data.voice = LocalPlayer.state.proximity.index or 2
 
 		SendNUIMessage({
-			action = 'init',
+			action = 'setStatuses',
 			data = data
 		})
 
-		utils.debug(1, "Loaded status", json.encode(data, {indent=true}))
+		utils.debug(1, "Loaded status ", json.encode(data, {indent=true}))
 	end
 
 	AddEventHandler('ox:playerLoaded', init)
@@ -46,15 +51,26 @@ else
 
 	RegisterNUICallback('nuiReady', function(_, cb)
 		nuiReady = true
-		SendNUIMessage({ action = 'toggleVisibility', data = true })
 		cb(1)
+	end)
+
+	-- Death handler
+	AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
+		if not nuiReady or not PlayerIsLoaded then return end
+
+		if value then
+			-- Just dead
+			SendNUIMessage({ action = 'toggleVisibility', data = false })
+		elseif PlayerIsDead then
+			-- Just revived
+			init()
+		end
+		PlayerIsDead = value
 	end)
 
 	-- Support resource restart
 	AddEventHandler('onResourceStart', function(resourceName)
-		if resourceName ~= cache.resource then return end
-
-		if cache.ped then
+		if resourceName == cache.resource and cache.ped then
 			PlayerIsLoaded = true
 			init()
 		end

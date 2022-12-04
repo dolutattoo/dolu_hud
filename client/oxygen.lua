@@ -3,8 +3,7 @@ local isUnderwater, oxygenMax
 CreateThread(function()
 	while true do
 		local wait = 200
-
-		if nuiReady then
+		if PlayerIsLoaded and not PlayerIsDead and nuiReady then
 			if IsPedSwimmingUnderWater(PlayerPedId()) then
 				local oxygenState = GetPlayerUnderwaterTimeRemaining(PlayerId())
 
@@ -13,10 +12,9 @@ CreateThread(function()
 				end
 
 				SendNUIMessage({
-					action = 'setStatusValue',
+					action = 'setStatuses',
 					data = {
-						statusName = 'oxygen',
-						value = utils.percent(oxygenState, oxygenMax)
+						oxygen = utils.percent(oxygenState, oxygenMax)
 					}
 				})
 
@@ -25,10 +23,9 @@ CreateThread(function()
 
 			elseif isUnderwater then
 				SendNUIMessage({
-					action = 'setStatusValue',
+					action = 'setStatuses',
 					data = {
-						statusName = 'oxygen',
-						value = 100
+						oxygen = 100
 					}
 				})
 

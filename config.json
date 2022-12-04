@@ -2,18 +2,14 @@
   "debug": false,
   "speedo": true,
   "hideRadarOnFoot": true,
-  "statusClientInterval": 2500,
-  "serverStatusInterval": 60000,
   "speedoMetrics": "kmh",
   "setMaxHealth": true,
-
-  "VoiceColor": "gray.2",
-  "HealthColor": "teal",
-  "ArmourColor": "blue",
-  "OxygenColor": "cyan",
-  "speedColor": "teal",
-
-  "statusesColors": {
+  "colors": {
+    "health": "teal",
+    "armour": "blue",
+    "voice": "gray.2",
+    "oxygen": "cyan",
+    "speedo": "teal",
     "hunger": "yellow",
     "thirst": "blue",
     "stress": "orange",

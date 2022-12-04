@@ -4,62 +4,32 @@ CreateThread(function()
 	local playerPed, lastHealth, lastArmour
 
 	while true do
-		if nuiReady and PlayerIsLoaded then
+		if nuiReady and PlayerIsLoaded and not PlayerIsDead then
 			local playerPed = cache.ped
+			local changed = false
 
 			local currentHealth = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
 			if currentHealth ~= lastHealth then
 				lastHealth = currentHealth
-				SendNUIMessage({
-					action = 'setStatusValue',
-					data = {
-						statusName = 'health',
-						value = currentHealth
-					}
-				})
+				changed = true
 			end
 
 			local currentArmour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId))
 			if currentArmour ~= lastArmour then
 				lastArmour = currentArmour
+				changed = true
+			end
+
+			if changed then
 				SendNUIMessage({
-					action = 'setStatusValue',
+					action = 'setStatuses',
 					data = {
-						statusName = 'armour',
-						value = currentArmour
+						health = currentHealth,
+						armour = currentArmour
 					}
 				})
 			end
 		end
 		Wait(50)
 	end
-end)
-
--- Death handler
-AddStateBagChangeHandler('dead', 'player:' .. cache.serverId, function(_, _, value)
-	if not nuiReady or not PlayerIsLoaded then return end
-
-	if value then
-		SendNUIMessage({ action = 'toggleVisibility', data = false })
-	else
-		if PlayerIsDead then
-			TriggerEvent('dolu_hud:init', {
-				health = 200,
-				armour = 0,
-				status = {
-					hunger = Config.status.hunger.default * 0.75,
-					thirst = Config.status.thirst.default * 0.75,
-					stress = Config.status.stress.default,
-					drunk = Config.status.drunk.default
-				}
-			})
-		end
-
-		SendNUIMessage({
-			action = 'toggleVisibility',
-			data = true
-		})
-	end
-
-	PlayerIsDead = value
 end)
