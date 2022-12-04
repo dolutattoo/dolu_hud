@@ -6,7 +6,7 @@ game 'gta5'
 
 --[[ Resource Information ]] --
 name 'dolu_hud'
-version '0.1.0'
+version '1.0'
 description 'HUD for overextended framework'
 author 'Dolu'
 repository 'https://github.com/dolutattoo/dolu_hud'
