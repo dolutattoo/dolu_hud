@@ -8,7 +8,7 @@
   "colors": {
     "health": "teal.4",
     "armour": "blue.5",
-    "voice": "gray.2",
+    "voice": "gray.1",
     "oxygen": "cyan",
     "speedo": "teal",
     "hunger": "yellow",
