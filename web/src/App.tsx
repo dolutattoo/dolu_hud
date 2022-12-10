@@ -1,5 +1,5 @@
 import { Box, createStyles } from '@mantine/core'
-import Hud from './layouts'
+import Hud from './layouts/Hud'
 import Speedo from './layouts/Speedo'
 
 const useStyles = createStyles((theme) => ({
