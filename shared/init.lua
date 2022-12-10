@@ -11,6 +11,11 @@ else
 	statuses = {}
 
 	local function init()
+		SendNUIMessage({
+			action = 'setConfig',
+			data = Config or {}
+		})
+
 		local playerPed = cache.ped
 
 		-- Set max ped entity to 200 (NPCs and mp_f_freemode_01 has lower values)
@@ -18,21 +23,16 @@ else
 			SetEntityMaxHealth(playerPed, 200)
 		end
 
-		local data = {}
-
-		-- Make Hud visible
-		data.toggle = true
-
-		-- Health & Armour
-		data.health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100)
-		data.armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId))
-
 		-- Wait for ox_core to provide statuses
 		while not statuses?.hunger do Wait(0) end
-		data.statuses = statuses
 
-		-- Get voice level from statebag (pma_voice)
-		data.voice = LocalPlayer.state.proximity.index or 2
+		local data = {
+			toggle = true,
+			statuses = statuses,
+			health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100),
+			armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId)),
+			voice = LocalPlayer.state.proximity.index or 2
+		}
 
 		SendNUIMessage({
 			action = 'setStatuses',
