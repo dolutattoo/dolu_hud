@@ -18,21 +18,16 @@ end)
 -- Hide radar if not in a vehicle
 if Config.hideRadarOnFoot then
 	CreateThread(function()
-		local isRadarDisplayed, vehicle = false, false
-		DisplayRadar(isRadarDisplayed)
+		local isRadarDisplayed = false
+		DisplayRadar(false)
 
 		while true do
-			if PlayerIsLoaded and not PlayerIsDead and cache.vehicle ~= vehicle then
-				isRadarDisplayed = not isRadarDisplayed
-				vehicle = cache.vehicle
-				DisplayRadar(isRadarDisplayed)
-
-				SendNUIMessage({
-					action = 'toggleSpeedo',
-					data = vehicle and true or false
-				})
+			if PlayerIsLoaded and not PlayerIsDead and cache.vehicle and not isRadarDisplayed then
+				DisplayRadar(true)
+			elseif (not cache.vehicle or PlayerIsDead or not PlayerIsLoaded) and isRadarDisplayed then
+				DisplayRadar(false)
 			end
-
+			isRadarDisplayed = not isRadarDisplayed
 			Wait(200)
 		end
 	end)
