@@ -42,7 +42,10 @@ else
 		utils.debug(1, "Loaded status ", json.encode(data, {indent=true}))
 	end
 
-	AddEventHandler('ox:playerLoaded', init)
+	AddEventHandler('ox:playerLoaded', function()
+		PlayerIsLoaded = true
+		init()
+	end)
 
 	RegisterNetEvent('ox:playerLogout', function()
 		SendNUIMessage({ action = 'toggleVisibility', data = false })
