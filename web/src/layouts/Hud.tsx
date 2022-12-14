@@ -61,41 +61,41 @@ const Hud: React.FC = () => {
             }
         }
         if (data.talkingRadio !== undefined) {
-        setTalkingRadio(data.talkingRadio)
+            setTalkingRadio(data.talkingRadio)
         }
         if (data.voice !== undefined) {
-        setVoiceLevel(data.voice*33.3333)
+            setVoiceLevel(data.voice*33.3333)
         }
         if (data.health !== undefined) {
-        setHealth(data.health)
-        if (data.health !== health) setHealthColor(data.health > 10 ? config.colors.health : 'red')
+            setHealth(data.health)
+            if (data.health !== health) setHealthColor(data.health > 10 ? config.colors.health : 'red')
         }
         if (data.armour !== undefined) {
-        setArmour(data.armour)
-        if (data.armour !== armour) setArmourColor(data.armour > 10 ? config.colors.armour : 'red')
+            setArmour(data.armour)
+            if (data.armour !== armour) setArmourColor(data.armour > 10 ? config.colors.armour : 'red')
         }
         if (data.oxygen !== undefined) {
-        setOxygen(data.oxygen)
-        if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? config.colors.oxygen : 'red')
+            setOxygen(data.oxygen)
+            if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? config.colors.oxygen : 'red')
         }
         if (data.statuses !== undefined) {
-        const status = data.statuses
-        if (status.hunger !== undefined) {
-            setHunger(status.hunger)
-            if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? config.colors.hunger : 'red')
-        }
-        if (status.thirst !== undefined) {
-            setThirst(status.thirst)
-            if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? config.colors.thirst : 'red')
-        }
-        if (status.stress !== undefined) {
-            setStress(status.stress)
-            if (status.stress !== stress) setStressColor(status.stress < 95 ? config.colors.stress : 'red')
-        }
-        if (status.drunk !== undefined) {
-            setDrunk(status.drunk)
-            if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? config.colors.drunk : 'red')
-        }
+            const status = data.statuses
+            if (status.hunger !== undefined) {
+                setHunger(status.hunger)
+                if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? config.colors.hunger : 'red')
+            }
+            if (status.thirst !== undefined) {
+                setThirst(status.thirst)
+                if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? config.colors.thirst : 'red')
+            }
+            if (status.stress !== undefined) {
+                setStress(status.stress)
+                if (status.stress !== stress) setStressColor(status.stress < 95 ? config.colors.stress : 'red')
+            }
+            if (status.drunk !== undefined) {
+                setDrunk(status.drunk)
+                if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? config.colors.drunk : 'red')
+            }
         }
     })
 
