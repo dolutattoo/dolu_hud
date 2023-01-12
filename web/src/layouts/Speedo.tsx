@@ -1,4 +1,4 @@
-import React, { useState } from 'React'
+import React, { useState } from 'react'
 import { Box, Center, Progress, RingProgress, Text, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { BiGasPump } from 'react-icons/bi'

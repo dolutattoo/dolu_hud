@@ -1,4 +1,4 @@
-import React, { useState } from 'React'
+import React, { useState } from 'react'
 import { Center, Group, RingProgress, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { fetchNui } from '../utils/fetchNui'
