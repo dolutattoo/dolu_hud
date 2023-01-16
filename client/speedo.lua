@@ -1,3 +1,20 @@
+local electricModels = {
+    [`airtug`] = true,
+    [`caddy`] = true,
+    [`caddy2`] = true,
+    [`caddy3`] = true,
+    [`cyclone`] = true,
+    [`dilettante`] = true,
+    [`dilettante2`] = true,
+    [`imorgon`] = true,
+    [`iwagen`] = true,
+    [`khamelion`] = true,
+    [`neon`] = true,
+    [`raiden`] = true,
+    [`surge`] = true,
+    [`tezeract`] = true,
+    [`voltic`] = true,
+}
 
 CreateThread(function()
 	local lastSpeed = 0
@@ -7,6 +24,7 @@ CreateThread(function()
 	while not nuiReady do Wait(10) end
 	if PlayerIsLoaded and not PlayerIsDead and cache.vehicle then
 		if DoesEntityExist(cache.vehicle) then
+			local model = GetEntityModel(cache.vehicle)
 			SendNUIMessage({
 				action = 'toggleSpeedo',
 				data = true
@@ -18,7 +36,8 @@ CreateThread(function()
 				data = {
 					speed = 0,
 					rpm = GetVehicleCurrentRpm(cache.vehicle),
-					fuelLevel = GetVehicleFuelLevel(cache.vehicle)
+					fuelLevel = GetVehicleFuelLevel(cache.vehicle),
+					electric = electricModels[model]
 				}
 			})
 		end
@@ -27,6 +46,7 @@ CreateThread(function()
 	while true do
 		if PlayerIsLoaded and not PlayerIsDead and cache.vehicle then
 			if DoesEntityExist(cache.vehicle) then
+				local model = GetEntityModel(cache.vehicle)
 				if not speedo then
 					SendNUIMessage({
 						action = 'toggleSpeedo',
@@ -43,7 +63,8 @@ CreateThread(function()
 						data = {
 							speed = math.floor(currentSpeed),
 							rpm = GetVehicleCurrentRpm(cache.vehicle),
-							fuelLevel = GetVehicleFuelLevel(cache.vehicle)
+							fuelLevel = GetVehicleFuelLevel(cache.vehicle),
+							electric = electricModels[model]
 						}
 					})
 				end
