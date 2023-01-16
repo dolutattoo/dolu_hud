@@ -32,7 +32,6 @@ CreateThread(function ()
                 SendNUIMessage({action = 'setSeatbelt', data = isBuckled})
                 if not inVehicle and isBuckled then isBuckled = false end
                 curInVehicle = inVehicle
-                print(curInVehicle)
             end
         end
         Wait(1000)
