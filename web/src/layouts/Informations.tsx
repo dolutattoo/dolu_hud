@@ -14,19 +14,20 @@ const Information: React.FC = () => {
     // Config
     const { config } = useConfig()
 
+    // Date
+    setInterval(() => {
+      const date = new Date();
+      const dateString = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + " - " + ('0' + date.getDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
+      setDateString(dateString)
+    }, 60000)
+
+
     // Visibility
     const [visible, setVisible] = useState<boolean>(false)
+    useNuiEvent('toggleVisibility', (state: boolean) => setVisible(state))
 
     // Variables
     const [playerID, setPlayerID] = useState<number>(0)
-    const [dateString, setDateString] = useState('');
-
-    //Set Date every minute
-    setInterval(() => {
-        const date = new Date();
-        const dateString = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + " - " + ('0' + date.getDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
-        setDateString(dateString)
-        }, 1000)
     
     // Set values from client script
     useNuiEvent('setStatuses', (data: Informations) => {
@@ -44,23 +45,57 @@ const Information: React.FC = () => {
 
     return (
         <>
-        {visible &&
+        {visible && <>
+        <Box style={
+            {
+                "display": "flex",
+                "flexDirection": "column",
+                "justifyContent": "center",
+                "alignItems": "center",
+                "padding": "0px",
+                "position": "absolute",
+                "bottom": "0px",
+                "right": "0px",
+                "width": "110px",
+                "height": "30px",
+                "background": "rgba(0, 0, 0, 0.5)"
+            }
+        }>
             <Text style={
                 {
-                    "width": "auto",
+                    "width": "110px",
                     "height": "15px",
                     "fontWeight": "400",
                     "fontSize": "12px",
                     "lineHeight": "15px",
+                    "textAlign": "center",
                     "color": "#FFFFFF",
-                    "position": "absolute",
-                    "bottom": "0px",
-                    "left": "0px",
+                    "flex": "none",
+                    "order": "0",
+                    "flexGrow": "0"
                   }
             }>
-                ID: {playerID} - {dateString}
+                {playerID}
             </Text>
-        }
+            <Text style={
+                {
+                    "width": "110px",
+                    "height": "15px",
+                    "fontWeight": "400",
+                    "fontSize": "12px",
+                    "lineHeight": "15px",
+                    "textAlign": "center",
+                    "color": "#FFFFFF",
+                    "flex": "none",
+                    "order": "1",
+                    "flexGrow": "0"
+                  }
+            }>
+                {dateString}
+            </Text>
+        </Box>
+        
+        </>}
         </>
     )
 }
