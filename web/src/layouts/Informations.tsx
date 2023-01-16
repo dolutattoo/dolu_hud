@@ -15,11 +15,12 @@ const Information: React.FC = () => {
     const { config } = useConfig()
 
     // Date
-    const date = new Date();
-    // YYYY/MM/DD
-    const dateString = date.getFullYear() + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + ('0' + date.getDate()).slice(-2) + " | " + ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
-    // MM/DD/YYYY
-    // const dateString = date.toLocaleDateString() + " | " + date.toLocaleTimeString();
+    setInterval(() => {
+      const date = new Date();
+      const dateString = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2) + " - " + ('0' + date.getDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
+      setDateString(dateString)
+    }, 60000)
+
 
     // Visibility
     const [visible, setVisible] = useState<boolean>(false)
