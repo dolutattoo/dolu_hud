@@ -27,14 +27,7 @@ shared_scripts {
 
 client_scripts {
 	'@ox_core/imports/client.lua',
-	'client/main.lua',
-	'client/voice.lua',
-	'client/minimap.lua',
-	'client/status.lua',
-	'client/oxygen.lua',
-	'client/death.lua',
-	'client/seatbelt.lua',
-	'client/speedo.lua'
+	'client/*.lua'
 }
 
 ui_page 'web/build/index.html'
