@@ -3,7 +3,7 @@
   "speedo": true,
   "hideRadarOnFoot": true,
   "speedoMetrics": "kmh",
-  "seatbeltKey": "K",
+  "seatbeltKey": "B",
   "setMaxHealth": true,
   "colors": {
     "health": "teal.4",

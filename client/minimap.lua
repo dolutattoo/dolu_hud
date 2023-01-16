@@ -3,9 +3,11 @@ CreateThread(function()
     local minimap = RequestScaleformMovie("minimap")
 
 	Wait(500)
-    SetRadarBigmapEnabled(true, false)
+    SetBigmapActive(true, false)
     Wait(500)
-    SetRadarBigmapEnabled(false, false)
+    SetBigmapActive(false, false)
+	Wait(500)
+	DisplayRadar(true)
 
     while true do
         BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
