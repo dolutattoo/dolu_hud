@@ -1,30 +1,52 @@
-local attached
+local isBuckled = false
 
-CreateThread(function()
-	SetFlyThroughWindscreenParams(15.0, 20.0, 17.0, 2000.0)
-
-	while true do
-		if PlayerIsLoaded and not PlayerIsDead and nuiReady and cache.vehicle and attached then
-			DisableControlAction(0, 75, true)
-		end
-		Wait(0)
-	end
-end)
-
-local function toggleSeatbelt()
-	attached = not attached
-
-	SendNUIMessage({
-		action = 'setSeatbelt',
-		data = attached
-	})
-
-	if attached then
-		SetFlyThroughWindscreenParams(1000.0, 1000.0, 0.0, 0.0)
-	else
-		SetFlyThroughWindscreenParams(15.0, 20.0, 17.0, 2000.0)
-	end
+local Buckled = function ()
+    CreateThread(function ()
+        while isBuckled do
+            DisableControlAction(0, 75, true)
+            Wait(0)
+        end
+    end)
 end
 
-RegisterCommand('dolu_hud:seatbelt', toggleSeatbelt)
+SetFlyThroughWindscreenParams(15.0, 20.0, 17.0, 2000.0)
+local Seatbelt = function (status)
+    if status then
+        SendNUIMessage({action = 'setSeatbelt', data = true})
+        SetFlyThroughWindscreenParams(1000.0,1000.0,0.0,0.0)
+        Buckled()
+    else
+        SendNUIMessage({action = 'setSeatbelt', data = false})
+        SetFlyThroughWindscreenParams(15.0, 20.0, 17.0, 2000.0)
+    end
+    isBuckled = status
+end
+
+local curInVehicle
+
+CreateThread(function ()
+    while true do
+        if nuiReady then
+            local inVehicle = cache.vehicle
+            if inVehicle ~= curInVehicle then
+                SendNUIMessage({action = 'setSeatbelt', data = isBuckled})
+                if not inVehicle and isBuckled then isBuckled = false end
+                curInVehicle = inVehicle
+                print(curInVehicle)
+            end
+        end
+        Wait(1000)
+    end
+end)
+
+RegisterCommand('dolu_hud:seatbelt', function ()
+    if cache.vehicle then
+        local curVehicleClass = GetVehicleClass(cache.vehicle)
+
+        if curVehicleClass ~= 8
+        and curVehicleClass ~= 13
+        and curVehicleClass ~= 14
+        then Seatbelt(not isBuckled) end
+    end
+end, false)
 RegisterKeyMapping('dolu_hud:seatbelt', 'Toggle seatbelt', 'keyboard', Config.seatbeltKey)
