@@ -21,3 +21,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+circle {
+  transition: all 0.5s ease;
+}
