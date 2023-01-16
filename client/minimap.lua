@@ -2,6 +2,7 @@
 CreateThread(function()
     local minimap = RequestScaleformMovie("minimap")
 
+	DisplayRadar(false)
 	Wait(500)
     SetBigmapActive(true, false)
     Wait(500)
