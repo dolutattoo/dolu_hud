@@ -31,7 +31,8 @@ else
 			statuses = statuses,
 			health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100),
 			armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId)),
-			voice = LocalPlayer.state.proximity.index or 2
+			voice = LocalPlayer.state.proximity.index or 2,
+			playerID = cache.serverId
 		}
 
 		SendNUIMessage({

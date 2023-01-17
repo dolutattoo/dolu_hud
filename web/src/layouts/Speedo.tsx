@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Center, Progress, RingProgress, Text, ThemeIcon } from '@mantine/core'
 import { useNuiEvent } from '../hooks/useNuiEvent'
-import { BiGasPump } from 'react-icons/bi'
+import { BiGasPump , BiBattery} from 'react-icons/bi'
 import seatbeltIcon from '../img/seatbelt.svg'
 import { useConfig } from '../providers/ConfigProvider'
 
@@ -9,7 +9,8 @@ import { useConfig } from '../providers/ConfigProvider'
 interface Speedo {
 	speed: number
 	rpm: number
-	fuelLevel: number
+  fuelLevel: number
+  electric: boolean
 }
 
 const Speedo: React.FC = () => {
@@ -31,6 +32,7 @@ const Speedo: React.FC = () => {
 	const [rpm, setRpm] = useState<number>(0)
 	const [fuelLevel, setFuelLevel] = useState<number>(0)
 	const [fuelLevelColor, setFuelLevelColor] = useState<string>('red')
+  const [electric, setElectric] = useState<boolean>(false)
 
 	const getColor = (value: number, color:string) => {
 		if (value > 10) { return color } else { return 'orange' }
@@ -45,6 +47,7 @@ const Speedo: React.FC = () => {
 		setRpm((data.rpm*100)/1)
 		setFuelLevel(data.fuelLevel)
 		setFuelLevelColor(getColor(data.fuelLevel, 'gray.4'))
+    setElectric(data.electric)
 	})
 
 	const getRpmColor = (value: number) => {
@@ -110,11 +113,11 @@ const Speedo: React.FC = () => {
 
           {/* FUEL */}
           <div style={{ position: 'relative', margin: '5px', float: 'right' }}>
-            {fuelLevel !== undefined && <RingProgress sections={[{ value: fuelLevel, color: fuelLevelColor }]} thickness={6/1.2} size={55/1.2} roundCaps
+          {fuelLevel !== undefined && <RingProgress sections={[{ value: fuelLevel, color: fuelLevelColor }]} thickness={6/1.2} size={55/1.2} roundCaps
               label={
                 <Center>
                 <ThemeIcon color={fuelLevelColor} variant='light' radius='xl' size={44/1.2}>
-                <BiGasPump size={23} />
+                {electric ? <BiBattery size={23} /> : <BiGasPump size={23} />}
                 </ThemeIcon>
                 </Center>
               }
