@@ -46,7 +46,7 @@ else
 		SendNUIMessage({ action = 'toggleVisibility', data = false })
 		PlayerIsLoaded = false
 		nuiReady = false
-		statuses = nil
+		statuses = {}
 	end)
 
 	RegisterNUICallback('nuiReady', function(_, cb)
@@ -82,7 +82,7 @@ else
 			SendNUIMessage({ action = 'toggleVisibility', data = false })
 			PlayerIsLoaded = false
 			nuiReady = false
-			statuses = nil
+			statuses = {}
 		end
 	end)
 
