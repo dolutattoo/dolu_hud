@@ -3,7 +3,7 @@ import { Box, Center, Progress, RingProgress, Text, ThemeIcon } from '@mantine/c
 import { useNuiEvent } from '../hooks/useNuiEvent'
 import { BiGasPump , BiBattery} from 'react-icons/bi'
 import seatbeltIcon from '../img/seatbelt.svg'
-import { useConfig } from '../providers/ConfigProvider'
+import config from '../../../config.json'
 
 
 interface Speedo {
@@ -14,9 +14,6 @@ interface Speedo {
 }
 
 const Speedo: React.FC = () => {
-    // Config
-    const { config } = useConfig()
-
     // Visibility
     const [visible, setVisible] = useState<boolean>(false)
         useNuiEvent('toggleSpeedo', (state: boolean) => setVisible(state))

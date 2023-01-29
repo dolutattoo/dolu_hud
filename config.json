@@ -1,6 +1,7 @@
 {
   "debug": false,
   "speedo": true,
+  "topScreenInfo": true,
   "hideRadarOnFoot": true,
   "speedoMetrics": "kmh",
   "seatbeltKey": "B",
@@ -10,15 +11,11 @@
     "rate": 1500,
     "amount": 1
   },
-  "colors": {
-    "health": "teal.4",
-    "armour": "blue.5",
-    "voice": "gray.1",
-    "oxygen": "cyan",
-    "speedo": "teal",
-    "hunger": "yellow",
-    "thirst": "cyan.5",
-    "stress": "orange",
-    "drunk": "grape"
+  "setStatusesAfterDeath": {
+    "enabled": true,
+    "hunger": 50,
+    "thirst": 50,
+    "stress": 0,
+    "drunk": 0
   }
 }

@@ -16,6 +16,7 @@ local function healPlayer(source, target, armour)
 	player.setStatus('hunger', 0)
 	player.setStatus('thirst', 0)
 	player.setStatus('stress', 0)
+	player.setStatus('drunk', 0)
 
 	lib.callback('dolu_hud:healPlayer', target, function(success)
 		if success then
@@ -43,3 +44,15 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 		healPlayer(source, args.target, args.armour)
 	end
 end, { 'target:number', 'armour:?number' })
+
+if Config.setStatusesAfterDeath.enabled then
+	RegisterNetEvent('dolu_hud:revived', function()
+		local player = Ox.GetPlayer(source)
+		if player then
+			player.setStatus('hunger', Config.setStatusesAfterDeath.hunger)
+			player.setStatus('thirst', Config.setStatusesAfterDeath.thirst)
+			player.setStatus('stress', Config.setStatusesAfterDeath.stress)
+			player.setStatus('drunk', Config.setStatusesAfterDeath.drunk)
+		end
+	end)
+end

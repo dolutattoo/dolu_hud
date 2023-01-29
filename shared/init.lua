@@ -10,11 +10,6 @@ else
 	statuses = {}
 
 	local function init()
-		SendNUIMessage({
-			action = 'setConfig',
-			data = Config or {}
-		})
-
 		local playerPed = cache.ped
 
 		-- Set max ped entity to 200 (NPCs and mp_f_freemode_01 has lower values)
@@ -70,6 +65,10 @@ else
 		if value then
 			-- Just dead
 			SendNUIMessage({ action = 'toggleVisibility', data = false })
+
+			if Config.setStatusesAfterDeath then
+				TriggerServerEvent('dolu_hud:revived')
+			end
 		elseif PlayerIsDead then
 			-- Just revived
 			init()

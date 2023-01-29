@@ -5,7 +5,6 @@ import { fetchNui } from '../utils/fetchNui'
 import { BiBrain, BiHeart, BiMicrophone, BiShield } from 'react-icons/bi'
 import { TbDroplet, TbGlass, TbLungs, TbMeat, TbRadio } from 'react-icons/tb'
 import { IoSkullOutline } from 'react-icons/io5'
-import { useConfig } from '../providers/ConfigProvider'
 
 interface HudProps {
 	toggle?: boolean
@@ -24,9 +23,6 @@ interface HudProps {
 }
 
 const Hud: React.FC = () => {
-    // Config
-    const { config } = useConfig()
-
     // Visibility
     const [visible, setVisible] = useState<boolean>(false)
     useNuiEvent('toggleVisibility', (value: boolean) => setVisible(value))
@@ -43,14 +39,14 @@ const Hud: React.FC = () => {
     const [oxygen, setOxygen] = useState<number>(100)
 
     // Colors states
-    const [voiceColor, setVoiceColor] = useState<string>(config.colors.voice)
-    const [healthColor, setHealthColor] = useState<string>(config.colors.health)
-    const [armourColor, setArmourColor] = useState<string>(config.colors.armour)
-    const [hungerColor, setHungerColor] = useState<string>(config.colors.hunger)
-    const [thirstColor, setThirstColor] = useState<string>(config.colors.thirst)
-    const [stressColor, setStressColor] = useState<string>(config.colors.stress)
-    const [drunkColor, setDrunkColor] = useState<string>(config.colors.drunk)
-    const [oxygenColor, setOxygenColor] = useState<string>(config.colors.oxygen)
+    const [voiceColor, setVoiceColor] = useState<string>('gray.1')
+    const [healthColor, setHealthColor] = useState<string>('teal.4')
+    const [armourColor, setArmourColor] = useState<string>('blue.5')
+    const [hungerColor, setHungerColor] = useState<string>('yellow')
+    const [thirstColor, setThirstColor] = useState<string>('cyan.5')
+    const [stressColor, setStressColor] = useState<string>('orange')
+    const [drunkColor, setDrunkColor] = useState<string>('grape')
+    const [oxygenColor, setOxygenColor] = useState<string>('cyan')
 
     // Set values from client script
     useNuiEvent('setStatuses', (data: HudProps) => {
@@ -68,33 +64,33 @@ const Hud: React.FC = () => {
         }
         if (data.health !== undefined) {
             setHealth(data.health)
-            if (data.health !== health) setHealthColor(data.health > 10 ? config.colors.health : 'red')
+            if (data.health !== health) setHealthColor(data.health > 10 ? 'teal.4' : 'red')
         }
         if (data.armour !== undefined) {
             setArmour(data.armour)
-            if (data.armour !== armour) setArmourColor(data.armour > 10 ? config.colors.armour : 'red')
+            if (data.armour !== armour) setArmourColor(data.armour > 10 ? 'blue.5' : 'red')
         }
         if (data.oxygen !== undefined) {
             setOxygen(data.oxygen)
-            if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? config.colors.oxygen : 'red')
+            if (data.oxygen !== oxygen) setOxygenColor(data.oxygen > 10 ? 'cyan' : 'red')
         }
         if (data.statuses !== undefined) {
             const status = data.statuses
             if (status.hunger !== undefined) {
                 setHunger(status.hunger)
-                if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? config.colors.hunger : 'red')
+                if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? 'yellow' : 'red')
             }
             if (status.thirst !== undefined) {
                 setThirst(status.thirst)
-                if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? config.colors.thirst : 'red')
+                if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? 'cyan.5' : 'red')
             }
             if (status.stress !== undefined) {
                 setStress(status.stress)
-                if (status.stress !== stress) setStressColor(status.stress < 95 ? config.colors.stress : 'red')
+                if (status.stress !== stress) setStressColor(status.stress < 95 ? 'orange' : 'red')
             }
             if (status.drunk !== undefined) {
                 setDrunk(status.drunk)
-                if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? config.colors.drunk : 'red')
+                if (status.drunk !== drunk) setDrunkColor(status.drunk < 95 ? 'grape' : 'red')
             }
         }
     })
@@ -104,7 +100,7 @@ const Hud: React.FC = () => {
         if (isTalking === true) {
             setVoiceColor('yellow.2')
         } else {
-            setVoiceColor(config.colors.voice)
+            setVoiceColor('gray.1')
         }
     })
 

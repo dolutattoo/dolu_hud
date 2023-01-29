@@ -2,6 +2,7 @@ import { Box, createStyles } from '@mantine/core'
 import Hud from './layouts/Hud'
 import Speedo from './layouts/Speedo'
 import Information from './layouts/Informations'
+import config from '../../config.json'
 
 const useStyles = createStyles((theme) => ({
   status: {
@@ -24,7 +25,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Information />
+      {config.topScreenInfo && <Information />}
       <Box className={classes.status}>
         <Hud />
         <Speedo />

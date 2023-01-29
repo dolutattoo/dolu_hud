@@ -3,7 +3,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
-import ConfigProvider from './providers/ConfigProvider'
 import { isEnvBrowser } from './utils/misc'
 
 if (isEnvBrowser()) {
@@ -18,10 +17,8 @@ if (isEnvBrowser()) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ConfigProvider>
-      <MantineProvider theme={{ colorScheme: 'dark' }}>
-        <App />
-      </MantineProvider>
-    </ConfigProvider>
+    <MantineProvider theme={{ colorScheme: 'dark' }}>
+      <App />
+    </MantineProvider>
   </React.StrictMode>
 )
