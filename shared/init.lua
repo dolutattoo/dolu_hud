@@ -5,7 +5,6 @@ if server then
 	SetConvarReplicated('game_enableFlyThroughWindscreen', 'true') -- Enable flying trough windscreen while in vehicle
 	SetConvarReplicated('voice_enableUi', 'false') -- Hide pma_voice hud
 else
-
 	PlayerIsLoaded = false
 	PlayerIsDead = false
 	statuses = {}
@@ -32,7 +31,7 @@ else
 			health = utils.percent(GetEntityHealth(playerPed)-100, GetEntityMaxHealth(playerPed)-100),
 			armour = utils.percent(GetPedArmour(playerPed), GetPlayerMaxArmour(cache.playerId)),
 			voice = LocalPlayer.state.proximity.index or 2,
-			playerID = cache.serverId
+			playerId = cache.serverId
 		}
 
 		SendNUIMessage({
