@@ -15,8 +15,7 @@ repository 'https://github.com/dolutattoo/dolu_hud'
 dependencies {
 	'/onesync',
 	'pma-voice',
-	'ox_lib',
-	'ox_core'
+	'ox_lib'
 }
 
 shared_scripts {

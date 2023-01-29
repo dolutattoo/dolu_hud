@@ -77,6 +77,16 @@ else
 		PlayerIsDead = value
 	end)
 
+	-- Support ox_core restart
+	AddEventHandler('onResourceStop', function(resourceName)
+		if resourceName == 'ox_core' then
+			SendNUIMessage({ action = 'toggleVisibility', data = false })
+			PlayerIsLoaded = false
+			nuiReady = false
+			statuses = nil
+		end
+	end)
+
 	-- Support resource restart
 	AddEventHandler('onResourceStart', function(resourceName)
 		if resourceName == cache.resource and cache.ped then
