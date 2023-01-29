@@ -5,6 +5,11 @@
   "speedoMetrics": "kmh",
   "seatbeltKey": "B",
   "setMaxHealth": true,
+  "damagePedIfLowStatuses": {
+    "enabled": true,
+    "rate": 1500,
+    "amount": 1
+  },
   "colors": {
     "health": "teal.4",
     "armour": "blue.5",
