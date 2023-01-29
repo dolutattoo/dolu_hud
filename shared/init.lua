@@ -48,7 +48,7 @@ else
 		init()
 	end)
 
-	RegisterNetEvent('ox:playerLogout', function()
+	AddEventHandler('ox:playerLogout', function()
 		SendNUIMessage({ action = 'toggleVisibility', data = false })
 		PlayerIsLoaded = false
 		nuiReady = false
@@ -56,12 +56,12 @@ else
 	end)
 
 	RegisterNUICallback('nuiReady', function(_, cb)
+		cb(1)
 		nuiReady = true
 		SendNUIMessage({
 			action = 'setConfig',
 			data = Config or {}
 		})
-		cb(1)
 	end)
 
 	-- Death handler

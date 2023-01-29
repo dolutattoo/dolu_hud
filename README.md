@@ -9,7 +9,3 @@ Please check the [Documentation](https://dolutattoo.github.io/docs/dolu_hud/intr
 
 
 <div align='center' style='width:25vw'><img src='https://i.imgur.com/depQRs9.png'/></div>
-
-# Remove this before pull
-
-![image](https://user-images.githubusercontent.com/87270976/212683334-7bb463d0-4c2e-489c-8df0-84b2a2934568.png)

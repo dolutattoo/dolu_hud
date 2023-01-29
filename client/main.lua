@@ -1,4 +1,3 @@
-
 -- Get Health and Armour and send them to NUI when they change
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour
