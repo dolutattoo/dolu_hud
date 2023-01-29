@@ -35,17 +35,15 @@ const Speedo: React.FC = () => {
   const [electric, setElectric] = useState<boolean>(false)
 
 	const getColor = (value: number, color:string) => {
-		if (value > 10) { return color } else { return 'orange' }
-	}
+        if (value > 10) { return color } else { return 'orange' }
+    }
 
-	// const speedoMetrics = "kmh" // Set Mph here if needed
-
-	// Set values from client script
-	useNuiEvent('setSpeedo', (data: Speedo) => {
-		if (!visible) {setVisible(true)}
-		setSpeed(data.speed)
-		setRpm((data.rpm*100)/1)
-		setFuelLevel(data.fuelLevel)
+    // Set values from client script
+    useNuiEvent('setSpeedo', (data: Speedo) => {
+        if (!visible) setVisible(true)
+        setSpeed(data.speed)
+        setRpm((data.rpm*100)/1)
+        setFuelLevel(data.fuelLevel)
 		setFuelLevelColor(getColor(data.fuelLevel, 'gray.4'))
     setElectric(data.electric)
 	})
@@ -65,15 +63,13 @@ const Speedo: React.FC = () => {
 	}
 
 	return (
-		<>
-		{visible && <>
-      <Center>
-        <Box
-          style={{ position: 'fixed', bottom: '7vh', width: '200px', height: '80px', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '0.7vh', justifyContent: 'center' }}
-        >
-          {/* RPM */}
-          <Progress
-            value={rpm}
+        <>
+        {visible && <>
+            <Center>
+                <Box style={{ position: 'fixed', bottom: '7vh', width: '200px', height: '80px', marginTop: '-10vh', backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: '0.7vh', justifyContent: 'center' }}>
+                    {/* RPM */}
+                    <Progress
+                        value={rpm}
             color={getRpmColor(rpm)}
             style={{ margin: '7px' }}
           />
@@ -92,24 +88,20 @@ const Speedo: React.FC = () => {
             <Center>
               <Text
                 color='gray.4'
-                size={20}
-                weight={800}
-                style={{ marginTop: '-2px' }}
-              >
-                {speed}
-              </Text>
-            </Center>
-            <Center>
-              <Text
+                                size={20}
+                                weight={800}
+                                style={{ marginTop: '-2px' }}
+                            >{speed}</Text>
+                        </Center>
+                        <Center>
+                            <Text
                 color='gray.4'
-                size='sm'
-                weight={800}
-                style={{ marginBottom: '-10px' }}
-              >
-                { config.speedoMetrics === 'kmh' ? 'Km/h' : 'Mph' }
-              </Text>
-            </Center>
-          </div>
+                                size='sm'
+                                weight={800}
+                                style={{ marginBottom: '-10px' }}
+                            >{config.speedoMetrics === 'kmh' ? 'Km/h' : 'Mph'}</Text>
+                        </Center>
+                    </div>
 
           {/* FUEL */}
           <div style={{ position: 'relative', margin: '5px', float: 'right' }}>
