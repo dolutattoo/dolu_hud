@@ -40,10 +40,6 @@ lib.addCommand('group.admin', 'heal', function(source, args)
 			healPlayer(source, args.target, args.armour)
 		end
 	else
-		if args.target == 'me' then
-			healPlayer(source, args.target, args.armour)
-		else
-			healPlayer(source, args.target, args.armour)
-		end
+		healPlayer(source, args.target, args.armour)
 	end
 end, { 'target:number', 'armour:?number' })
