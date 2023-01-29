@@ -1,3 +1,17 @@
+-- Healing player
+lib.callback.register('dolu_hud:healPlayer', function(armour)
+	local playerPed = cache.ped
+	local maxHealth = GetEntityMaxHealth(playerPed)
+
+	if armour then
+		SetPedArmour(playerPed, armour)
+	end
+
+	SetEntityHealth(playerPed, maxHealth)
+
+	return GetEntityHealth(playerPed) == maxHealth
+end)
+
 -- Get Health and Armour and send them to NUI when they change
 CreateThread(function()
 	local playerPed, lastHealth, lastArmour

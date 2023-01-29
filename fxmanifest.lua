@@ -29,6 +29,11 @@ client_scripts {
 	'client/*.lua'
 }
 
+server_scripts {
+	'@ox_core/imports/server.lua',
+	'server/*.lua'
+}
+
 ui_page 'web/build/index.html'
 
 files {
