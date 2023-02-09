@@ -15,7 +15,7 @@ end)
 if Config.damagePedIfLowStatuses.enabled then
 	CreateThread(function()
 		while true do
-			if statuses and not LocalPlayer.state.dead then
+			if PlayerIsLoaded and not PlayerIsDead and statuses then
 				local playerHealth = GetEntityHealth(cache.ped)
 
 				for _, v in pairs(statuses) do
