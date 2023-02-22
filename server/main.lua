@@ -33,17 +33,24 @@ local function healPlayer(source, target, armour)
 	end, armour)
 end
 
-lib.addCommand('group.admin', 'heal', function(source, args)
-	if not args.target then
-		if source == 0 then
-			print('Usage: heal [playerId]')
-		else
-			healPlayer(source, args.target, args.armour)
-		end
-	else
-		healPlayer(source, args.target, args.armour)
-	end
-end, { 'target:number', 'armour:?number' })
+lib.addCommand('heal', {
+    help = 'Restore player health and statuses',
+    params = {
+        {
+            name = 'target',
+            type = 'playerId',
+            help = 'Target player\'s server id', },
+        {
+            name = 'armour',
+            type = 'number',
+            help = 'How much armour to give the player',
+			optional = true,
+        }
+    },
+    restricted = 'group.admin'
+}, function(source, args, raw)
+	healPlayer(source, args.target, args.armour)
+end)
 
 if Config.setStatusesAfterDeath.enabled then
 	RegisterNetEvent('dolu_hud:revived', function()
