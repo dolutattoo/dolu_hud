@@ -27,35 +27,16 @@ const Speedo: React.FC = () => {
     const startSpeed = speed;
     const increment = (targetSpeed - startSpeed) / (duration / 10);
     let currentSpeed = startSpeed;
-  
-    const easeOutQuad = (t: number) => t * (2 - t);
 
     const updateSpeed = () => {
-      if (increment > 0) {
-        currentSpeed += increment;
-        if (currentSpeed < targetSpeed) {
-          const progress = currentSpeed / targetSpeed;
-          const easedProgress = easeOutQuad(progress);
-          const easedSpeed = startSpeed + (targetSpeed - startSpeed) * easedProgress;
-          setSpeed(Math.round(easedSpeed));
-          requestAnimationFrame(updateSpeed);
-        } else {
-          setSpeed(targetSpeed);
-        }
-      } else {
-        currentSpeed -= increment;
-        if (currentSpeed > targetSpeed) {
-          const progress = (startSpeed - currentSpeed) / (startSpeed - targetSpeed);
-          const easedProgress = easeOutQuad(progress);
-          const easedSpeed = startSpeed - (startSpeed - targetSpeed) * easedProgress;
-          setSpeed(Math.round(easedSpeed));
-          requestAnimationFrame(updateSpeed);
-        } else {
-          setSpeed(targetSpeed);
-        }
+      currentSpeed += increment;
+      setSpeed(Math.round(currentSpeed));
+
+      if ((increment > 0 && currentSpeed < targetSpeed) || (increment < 0 && currentSpeed > targetSpeed)) {
+        requestAnimationFrame(updateSpeed);
       }
     };
-        
+
     updateSpeed();
   };
 
@@ -83,7 +64,7 @@ const Speedo: React.FC = () => {
   useNuiEvent("setSpeedo", (data: Speedo) => {
     if (!visible) setVisible(true);
 
-    animateSpeed(data.speed, 400);
+    animateSpeed(data.speed, 500);
     animateRpm((data.rpm * 100) / 1, 500);
 
     setFuelLevel(data.fuelLevel);
