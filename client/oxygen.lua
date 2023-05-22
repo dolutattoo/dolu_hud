@@ -4,7 +4,7 @@ CreateThread(function()
 	while true do
 		local wait = 500
 		if PlayerIsLoaded and not PlayerIsDead and nuiReady then
-			if IsPedSwimmingUnderWater(PlayerPedId()) then
+			if IsPedSwimmingUnderWater(cache.ped) then
 				local oxygenState = GetPlayerUnderwaterTimeRemaining(PlayerId())
 
 				if not oxygenMax then

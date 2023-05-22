@@ -1,5 +1,5 @@
 local electricModels = {
-    [`airtug`] = true,
+	[`airtug`] = true,
 	[`caddy`] = true,
 	[`caddy2`] = true,
 	[`caddy3`] = true,
@@ -25,7 +25,7 @@ local electricModels = {
 CreateThread(function()
 	local lastSpeed = 0
 	local speedo = false
-
+	local waitMs = 150;
 	-- Support resource restart
 	while not nuiReady do Wait(10) end
 	if PlayerIsLoaded and not PlayerIsDead and cache.vehicle then
@@ -61,7 +61,13 @@ CreateThread(function()
 					speedo = true
 				end
 
-				local currentSpeed = GetEntitySpeed(cache.vehicle)*(Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
+				local currentSpeed = GetEntitySpeed(cache.vehicle) * (Config.speedoMetrics == 'kmh' and 3.6 or 2.236936)
+				if currentSpeed < lastSpeed and currentSpeed - 10 > 0 then
+					currentSpeed = currentSpeed - 10
+					waitMs = 50;
+				else
+					waitMs = 150;
+				end
 				if lastSpeed ~= currentSpeed then
 					lastSpeed = currentSpeed
 					SendNUIMessage({
@@ -74,6 +80,8 @@ CreateThread(function()
 						}
 					})
 				end
+
+		
 			end
 		else
 			if speedo then
@@ -85,6 +93,6 @@ CreateThread(function()
 			end
 			Wait(1000)
 		end
-		Wait(20)
+		Wait(waitMs)
 	end
 end)
