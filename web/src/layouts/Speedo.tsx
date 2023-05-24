@@ -87,7 +87,7 @@ const Speedo: React.FC = () => {
 
     setFuelLevel(data.fuelLevel);
     setFuelLevelColor(getColor(data.fuelLevel, "gray.4"));
-    setElectric(data.electric); 
+    setElectric(data.electric);
   });
 
   const getRpmColor = (value: number) => {
