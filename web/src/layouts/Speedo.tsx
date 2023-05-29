@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Box, Center, Progress, RingProgress, Text, ThemeIcon } from "@mantine/core";
+import {
+  Box,
+  Center,
+  Progress,
+  RingProgress,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
 import { useNuiEvent } from "../hooks/useNuiEvent";
 import { BiGasPump, BiBattery } from "react-icons/bi";
 import seatbeltIcon from "../img/seatbelt.svg";
@@ -14,14 +21,17 @@ interface Speedo {
 
 const Speedo: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
-  const [seatbeltColor, setSeatbeltColor] = useState<string>("rgba(200, 0, 0, 0.7)");
+  const [seatbeltColor, setSeatbeltColor] = useState<string>(
+    "rgba(200, 0, 0, 0.7)"
+  );
   const [speed, setSpeed] = useState<number>(0);
   const [rpm, setRpm] = useState<number>(0);
   const [fuelLevel, setFuelLevel] = useState<number>(0);
   const [fuelLevelColor, setFuelLevelColor] = useState<string>("red");
   const [electric, setElectric] = useState<boolean>(false);
 
-  const getColor = (value: number, color: string): string => (value > 10 ? color : "orange");
+  const getColor = (value: number, color: string): string =>
+    value > 10 ? color : "orange";
 
   const animateSpeed = (targetSpeed: number, duration: number) => {
     const startSpeed = speed;
@@ -32,7 +42,10 @@ const Speedo: React.FC = () => {
       currentSpeed += increment;
       setSpeed(Math.round(currentSpeed));
 
-      if ((increment > 0 && currentSpeed < targetSpeed) || (increment < 0 && currentSpeed > targetSpeed)) {
+      if (
+        (increment > 0 && currentSpeed < targetSpeed) ||
+        (increment < 0 && currentSpeed > targetSpeed)
+      ) {
         requestAnimationFrame(updateSpeed);
       }
     };
@@ -49,7 +62,10 @@ const Speedo: React.FC = () => {
       currentRpm += increment;
       setRpm(Math.round(currentRpm));
 
-      if ((increment > 0 && currentRpm < targetRpm) || (increment < 0 && currentRpm > targetRpm)) {
+      if (
+        (increment > 0 && currentRpm < targetRpm) ||
+        (increment < 0 && currentRpm > targetRpm)
+      ) {
         requestAnimationFrame(updateRpm);
       }
     };
@@ -59,7 +75,9 @@ const Speedo: React.FC = () => {
 
   useNuiEvent("toggleSpeedo", (state: boolean) => setVisible(state));
   useNuiEvent("setSeatbelt", (state: boolean) =>
-    setSeatbeltColor(state ? "rgba(200, 200, 200, 0.9)" : "rgba(200, 0, 0, 0.7)")
+    setSeatbeltColor(
+      state ? "rgba(200, 200, 200, 0.9)" : "rgba(200, 0, 0, 0.7)"
+    )
   );
   useNuiEvent("setSpeedo", (data: Speedo) => {
     if (!visible) setVisible(true);
@@ -72,27 +90,19 @@ const Speedo: React.FC = () => {
     setElectric(data.electric);
   });
 
-  const getRpmColor = (value: number): string => {
-    const lookupTable: { [key: number]: string } = {
-      0: "teal",
-      45: "green",
-      60: "yellow",
-      85: "orange",
-      95: "red",
-    };
-
-    const sortedKeys = Object.keys(lookupTable)
-      .map(Number)
-      .sort((a, b) => a - b);
-
-    for (let i = 0; i < sortedKeys.length; i++) {
-      const key = sortedKeys[i];
-      if (value < key) {
-        return lookupTable[key];
-      }
+  const getRpmColor = (value: number) => {
+    switch (true) {
+      case value < 45:
+        return "teal";
+      case value < 60:
+        return "green";
+      case value < 85:
+        return "yellow";
+      case value < 95:
+        return "orange";
+      default:
+        return "red";
     }
-
-    return "red";
   };
 
   useEffect(() => {
@@ -119,9 +129,15 @@ const Speedo: React.FC = () => {
                 justifyContent: "center",
               }}
             >
-              <Progress value={rpm} color={getRpmColor(rpm)} style={{ margin: "7px" }} />
+              <Progress
+                value={rpm}
+                color={getRpmColor(rpm)}
+                style={{ margin: "7px" }}
+              />
 
-              <div style={{ position: "relative", margin: "5px", float: "left" }}>
+              <div
+                style={{ position: "relative", margin: "5px", float: "left" }}
+              >
                 <img
                   src={seatbeltIcon}
                   alt="seatbeltIcon"
@@ -138,18 +154,30 @@ const Speedo: React.FC = () => {
 
               <div style={{ position: "absolute", marginLeft: "80px" }}>
                 <Center>
-                  <Text color="gray.4" size={20} weight={800} style={{ marginTop: "-2px" }}>
+                  <Text
+                    color="gray.4"
+                    size={20}
+                    weight={800}
+                    style={{ marginTop: "-2px" }}
+                  >
                     {speed}
                   </Text>
                 </Center>
                 <Center>
-                  <Text color="gray.4" size="sm" weight={800} style={{ marginBottom: "-10px" }}>
+                  <Text
+                    color="gray.4"
+                    size="sm"
+                    weight={800}
+                    style={{ marginBottom: "-10px" }}
+                  >
                     {config.speedoMetrics === "kmh" ? "Km/h" : "Mph"}
                   </Text>
                 </Center>
               </div>
 
-              <div style={{ position: "relative", margin: "5px", float: "right" }}>
+              <div
+                style={{ position: "relative", margin: "5px", float: "right" }}
+              >
                 {fuelLevel !== undefined && (
                   <RingProgress
                     sections={[{ value: fuelLevel, color: fuelLevelColor }]}
@@ -164,7 +192,11 @@ const Speedo: React.FC = () => {
                           radius="xl"
                           size={44 / 1.2}
                         >
-                          {electric ? <BiBattery size={23} /> : <BiGasPump size={23} />}
+                          {electric ? (
+                            <BiBattery size={23} />
+                          ) : (
+                            <BiGasPump size={23} />
+                          )}
                         </ThemeIcon>
                       </Center>
                     }
