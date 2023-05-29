@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Center,
-  Progress,
-  RingProgress,
-  Text,
-  ThemeIcon,
-} from "@mantine/core";
-import { useNuiEvent } from "../hooks/useNuiEvent";
+import { Box, Center, Progress, RingProgress, Text, ThemeIcon } from "@mantine/core";
 import { BiGasPump, BiBattery } from "react-icons/bi";
+import { useNuiEvent } from "../hooks/useNuiEvent";
 import seatbeltIcon from "../img/seatbelt.svg";
 import config from "../../../config.json";
 
-interface Speedo {
+interface SpeedoData {
   speed: number;
   rpm: number;
   fuelLevel: number;
@@ -20,75 +13,31 @@ interface Speedo {
 }
 
 const Speedo: React.FC = () => {
-  const [visible, setVisible] = useState<boolean>(false);
-  const [seatbeltColor, setSeatbeltColor] = useState<string>(
-    "rgba(200, 0, 0, 0.7)"
-  );
-  const [speed, setSpeed] = useState<number>(0);
-  const [rpm, setRpm] = useState<number>(0);
-  const [fuelLevel, setFuelLevel] = useState<number>(0);
-  const [fuelLevelColor, setFuelLevelColor] = useState<string>("red");
-  const [electric, setElectric] = useState<boolean>(false);
+  const [visible, setVisible] = useState(false);
+  const [seatbeltColor, setSeatbeltColor] = useState("rgba(200, 0, 0, 0.7)");
+  const [speed, setSpeed] = useState(0);
+  const [rpm, setRpm] = useState(0);
+  const [fuelLevel, setFuelLevel] = useState(0);
+  const [fuelLevelColor, setFuelLevelColor] = useState("red");
+  const [electric, setElectric] = useState(false);
 
-  const getColor = (value: number, color: string): string =>
-    value > 10 ? color : "orange";
+  const animate = (start: number, end: number, set: (value: number) => void, duration: number) => {
+    const increment = (end - start) / (duration / 10);
+    let current = start;
 
-  const animateSpeed = (targetSpeed: number, duration: number) => {
-    const startSpeed = speed;
-    const increment = (targetSpeed - startSpeed) / (duration / 10);
-    let currentSpeed = startSpeed;
+    const update = () => {
+      current += increment;
+      set(Math.round(current));
 
-    const updateSpeed = () => {
-      currentSpeed += increment;
-      setSpeed(Math.round(currentSpeed));
-
-      if (
-        (increment > 0 && currentSpeed < targetSpeed) ||
-        (increment < 0 && currentSpeed > targetSpeed)
-      ) {
-        requestAnimationFrame(updateSpeed);
+      if ((increment > 0 && current < end) || (increment < 0 && current > end)) {
+        requestAnimationFrame(update);
       }
     };
 
-    updateSpeed();
+    update();
   };
 
-  const animateRpm = (targetRpm: number, duration: number) => {
-    const startRpm = rpm;
-    const increment = (targetRpm - startRpm) / (duration / 10);
-    let currentRpm = startRpm;
-
-    const updateRpm = () => {
-      currentRpm += increment;
-      setRpm(Math.round(currentRpm));
-
-      if (
-        (increment > 0 && currentRpm < targetRpm) ||
-        (increment < 0 && currentRpm > targetRpm)
-      ) {
-        requestAnimationFrame(updateRpm);
-      }
-    };
-
-    updateRpm();
-  };
-
-  useNuiEvent("toggleSpeedo", (state: boolean) => setVisible(state));
-  useNuiEvent("setSeatbelt", (state: boolean) =>
-    setSeatbeltColor(
-      state ? "rgba(200, 200, 200, 0.9)" : "rgba(200, 0, 0, 0.7)"
-    )
-  );
-  useNuiEvent("setSpeedo", (data: Speedo) => {
-    if (!visible) setVisible(true);
-
-    animateSpeed(data.speed, 500);
-    animateRpm((data.rpm * 100) / 1, 500);
-
-    setFuelLevel(data.fuelLevel);
-    setFuelLevelColor(getColor(data.fuelLevel, "gray.4"));
-    setElectric(data.electric);
-  });
+  const getColor = (value: number, color: string) => (value > 10 ? color : "orange");
 
   const getRpmColor = (value: number) => {
     switch (true) {
@@ -105,12 +54,31 @@ const Speedo: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const speedoMetrics = config.speedoMetrics === "kmh" ? "Km/h" : "Mph";
+  const updateFuelLevelColor = () => {
     const fuelLevelColor = getColor(fuelLevel, "gray.4");
-
     setFuelLevelColor(fuelLevelColor);
-  }, [config.speedoMetrics, fuelLevel]);
+  };
+
+  const handleToggleSpeedo = (state: boolean) => setVisible(state);
+  const handleSetSeatbelt = (state: boolean) =>
+    setSeatbeltColor(state ? "rgba(200, 200, 200, 0.9)" : "rgba(200, 0, 0, 0.7)");
+  const handleSetSpeedo = (data: SpeedoData) => {
+    if (!visible) {
+      setVisible(true);
+    }
+
+    animate(speed, data.speed, setSpeed, 500);
+    animate(rpm, (data.rpm * 100) / 1, setRpm, 500);
+
+    setFuelLevel(data.fuelLevel);
+    setElectric(data.electric);
+  };
+
+  useNuiEvent("toggleSpeedo", handleToggleSpeedo);
+  useNuiEvent("setSeatbelt", handleSetSeatbelt);
+  useNuiEvent("setSpeedo", handleSetSpeedo);
+
+  useEffect(updateFuelLevelColor, [config.speedoMetrics, fuelLevel]);
 
   return (
     <>
