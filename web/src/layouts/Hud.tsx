@@ -77,11 +77,11 @@ const Hud: React.FC = () => {
         if (data.statuses !== undefined) {
             const status = data.statuses
             if (status.hunger !== undefined) {
-                setHunger(status.hunger)
+                setHunger(Math.abs(status.hunger - 100))
                 if (status.hunger !== hunger) setHungerColor(status.hunger < 95 ? 'yellow' : 'red')
             }
             if (status.thirst !== undefined) {
-                setThirst(status.thirst)
+                setThirst(Math.abs(status.thirst - 100))
                 if (status.thirst !== thirst) setThirstColor(status.thirst < 95 ? 'cyan.5' : 'red')
             }
             if (status.stress !== undefined) {
